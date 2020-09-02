@@ -1,4 +1,4 @@
-setupAgentsTest <- function(df = dfABM) {
+setupAgents <- function(df = dfABM) {
   dfAgent <- data.frame(
     "agentID" <- seq(1:df$numberAgents),
     "dimensions" <- df$dimensions,
