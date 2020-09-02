@@ -1,6 +1,6 @@
 
 
-setHeading2D <- function(df = dfAgent, numberAgents = dfABM$numberAgents) {
+setHeading2D <- function(df = dfAgents, numberAgents = dfABM$numberAgents) {
   df$Heading1 = df$Heading1 + rnorm(numberAgents, 0, 20)
   df$Heading1 = ifelse(df$Heading1 > 360 | df$Heading1 < 0, abs(abs(df$Heading1) - 360), df$Heading1)
   return(df)
@@ -16,12 +16,15 @@ setHeading3D <- function(df = dfAgent, numberAgents = dfABM$numberAgents) {
 
 # turn around if agent has left the world
 
-reverseHeading2D <- function(df = dfAgent) {
+reverseHeading2D <- function(df = dfAgents) {
   df$Heading1 = ifelse(df$Heading1 > 180, df$Heading1 - 180, df$Heading1 + 180)
+  df = move2D(df)
+  df = setHeading2D(df)
+  df= move2D(df)
   return(df)
 }
 
-reverseHeading3D <- function(df = dfAgent) {
+reverseHeading3D <- function(df = dfAgents) {
   df$Heading1 = ifelse(df$Heading1 > 180, df$Heading1 - 180, df$Heading1 + 180)
   df$Heading2 = ifelse(df$Heading2 > 180, df$Heading2 - 180, df$Heading2 + 180)
   return(df)
