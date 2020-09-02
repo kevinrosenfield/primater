@@ -1,9 +1,9 @@
 setupAgents <- function(df = dfABM) {
   dfAgent <- data.frame(
-    "agentID" = seq(1:df$numberAgents),
-    "dimensions" = df$dimensions,
-    "xCor" = runif(df$numberAgents, 0 - df$worldDiameterMeters / 2, df$worldDiameterMeters / 2),
-    "yCor" = runif(df$numberAgents, 0 - df$worldDiameterMeters / 2, df$worldDiameterMeters / 2)
+    "agentID" <- seq(1:df$numberAgents),
+    "dimensions" <- df$dimensions,
+    "xCor" <- runif(df$numberAgents, 0 - df$worldDiameterMeters / 2, df$worldDiameterMeters / 2),
+    "yCor" <- runif(df$numberAgents, 0 - df$worldDiameterMeters / 2, df$worldDiameterMeters / 2)
     )
   dfAgent$xCorOrigin = dfAgent$xCor
   dfAgent$yCorOrigin = dfAgent$yCor
