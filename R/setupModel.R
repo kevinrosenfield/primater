@@ -6,7 +6,7 @@ setupABM <- function(dimensions = 2) {
     "dimensions" = dimensions,
     "dailyActivityProp" = abs(rnorm(1, 12, 2.5)))
   model <- c(model,
-    if( Dimensions == 2) {
+    if( dimensions == 2) {
       area = pi * (model$worldDiameterMeters / 2)^2
     } else {
       area = 0.75 * pi * (model$worldDiameterMeters / 2)^3
