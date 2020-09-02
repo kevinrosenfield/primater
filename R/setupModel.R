@@ -5,33 +5,29 @@ setupABM <- function(dimensions = 2) {
     "worldDiameterMeters" = runif(1, 25, 1000),
     "dimensions" = dimensions,
     "dailyActivityProp" = abs(rnorm(1, 12, 2.5)))
-  model <- c(model,
-    if( dimensions == 2) {
-      area = pi * (model$worldDiameterMeters / 2)^2
-    } else {
-      area = 0.75 * pi * (model$worldDiameterMeters / 2)^3
-      },
-    "worldSizeMetersDim" = area,
+  model <- c(
+    model,
+    "worldSizeMetersDim" = ifelse(
+      dimensions == 2, pi * (model$worldDiameterMeters / 2)^2, 0.75 * pi * (model$worldDiameterMeters / 2)^3),
     "meanMaleDayRange" = abs(rnorm(1, model$worldDiameterMeters / 10, (model$worldDiameterMeters / 50))),
     "meanFemaleDayRange" = abs(rnorm(1, model$worldDiameterMeters / 10,
-                                      (model$worldDiameterMeters / 50))))
+                                     (model$worldDiameterMeters / 50))))
   model <- c(model,
-    "meanMaleRangeMetersDim" = abs(rnorm(1, model$worldSizeMetersDim / model$numberAgents,
+     "meanMaleRangeMetersDim" = abs(rnorm(1, model$worldSizeMetersDim / model$numberAgents,
                                           (model$worldSizeMetersDim / model$numberAgents) * 0.25)),
-    "meanFemaleRangeMetersDim" = abs(rnorm(1, model$worldSizeMetersDim / model$numberAgents,
-                                            (model$worldSizeMetersDim / model$numberAgents) * 0.25)),
-    "meanMaleMetersPerHour" = abs(rnorm(1, model$meanMaleDayRange / model$dailyActivityProp,
-                                         (model$meanMaleDayRange / model$dailyActivityProp / 3))),
-    "meanFemaleMetersPerHour" = abs(rnorm(1, model$meanFemaleDayRange / model$dailyActivityProp,
-                                         (model$meanFemaleDayRange / model$dailyActivityProp / 3))),
-    "sdMaleDayRange" = abs(runif(1, 0, model$meanMaleDayRange / 10)),
-    "sdFemaleDayRange" = abs(runif(1, 0, model$meanFemaleDayRange / 10)))
+     "meanFemaleRangeMetersDim" = abs(rnorm(1, model$worldSizeMetersDim / model$numberAgents,
+                                              (model$worldSizeMetersDim / model$numberAgents) * 0.25)),
+     "meanMaleMetersPerHour" = abs(rnorm(1, model$meanMaleDayRange / model$dailyActivityProp,
+                                           (model$meanMaleDayRange / model$dailyActivityProp / 3))),
+     "meanFemaleMetersPerHour" = abs(rnorm(1, model$meanFemaleDayRange / model$dailyActivityProp,
+                                           (model$meanFemaleDayRange / model$dailyActivityProp / 3))),
+     "sdMaleDayRange" = abs(runif(1, 0, model$meanMaleDayRange / 10)),
+     "sdFemaleDayRange" = abs(runif(1, 0, model$meanFemaleDayRange / 10)))
   model <- c(model,
-    "sdMaleRangeMetersDim" = abs(runif(1, 0, model$meanMaleRangeMetersDim / 2)),
-    "sdFemaleRangeMetersDim" = abs(runif(1, 0, model$meanFemaleRangeMetersDim / 20)),
-    "sdFemaleMetersPerHour" = abs(runif(1, 0, model$meanFemaleMetersPerHour / 3)),
-    "sdMaleMetersPerHour" = abs(runif(1, 0, model$meanMaleMetersPerHour / 3))
+     "sdMaleRangeMetersDim" = abs(runif(1, 0, model$meanMaleRangeMetersDim / 2)),
+     "sdFemaleRangeMetersDim" = abs(runif(1, 0, model$meanFemaleRangeMetersDim / 20)),
+     "sdFemaleMetersPerHour" = abs(runif(1, 0, model$meanFemaleMetersPerHour / 3)),
+     "sdMaleMetersPerHour" = abs(runif(1, 0, model$meanMaleMetersPerHour / 3))
   )
-  model <-  model[-6]
   return(model)
 }

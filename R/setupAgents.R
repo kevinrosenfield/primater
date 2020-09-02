@@ -1,32 +1,36 @@
 setupAgents <- function(df = dfABM) {
-  dfAgent <- data.frame(
-    "agentID" <- seq(1:df$numberAgents),
-    "dimensions" <- df$dimensions,
-    "xCor" <- runif(df$numberAgents, 0 - df$worldDiameterMeters / 2, df$worldDiameterMeters / 2),
-    "yCor" <- runif(df$numberAgents, 0 - df$worldDiameterMeters / 2, df$worldDiameterMeters / 2)
-    )
-  dfAgent$xCorOrigin = dfAgent$xCor
-  dfAgent$yCorOrigin = dfAgent$yCor
-  if (df$dimensions == 3)  {
-    dfAgent$zCor = runif(df$numberAgents, 0 - df$worldDiameterMeters / 2, df$worldDiameterMeters / 2)
-    dfAgent$zCorOrigin = dfAgent$zCor
-    }
-  dfAgent$Age <- abs(rnorm(df$numberAgents, 9, 4))
-  dfAgent$Sex = as.factor(ifelse(sample(1:2, 1) == 1, "M", "F"))
-  dfAgent$Mass <- abs(rnorm(df$numberAgents, 20, 5))
-  dfAgent$Heading1 <- runif(df$numberAgents, 0, 360)
-  dfAgent$Heading2 <- runif(df$numberAgents, 0, 360)
-  dfAgent$homeRangeMetersDim <- ifelse(dfAgent$Sex == "F", rnorm(1, df$meanFemaleRangeMetersDim, df$sdFemaleRangeMetersDim),
-                                                                 rnorm(1, df$meanMaleRangeMetersDim, df$sdMaleRangeMetersDim))
-  dfAgent$homeRangeRadius <- sqrt(dfAgent$homeRangeMetersDim/pi)
-  dfAgent$dayRangeMeters <- ifelse(dfAgent$Sex == "F", rnorm(1, df$meanFemaleDayRange, df$sdFemaleDayRange),
-                                   rnorm(1, df$meanMaleDayRange, df$sdMaleDayRange))
-  dfAgent$metersPerHour <- ifelse(dfAgent$Sex == "M", rnorm(1, df$meanMaleMetersPerHour, df$sdMaleMetersPerHour),
-                                    rnorm(1, df$meanFemaleMetersPerHour, df$sdFemaleMetersPerHour))
-  head(paste("This ", df$dimensions, "-dimensional model world is ", round(df$worldSizeMetersDim,2), " m^", df$dimensions,
-             ". Its ", length(dfAgent$Sex[dfAgent$Sex == "F"]), " female residents' home ranges are ",
-             round(df$meanFemaleRangeMetersDim ,2), " m^", df$dimensions, " on average.", sep = ""), 1)
-  head(paste("This ", df$dimensions, "-dimensional model world is ", round(df$worldSizeMetersDim,2), " m^", df$dimensions,
-             ". Its ", length(df$Sex[dfAgent$Sex == "M"]), " male residents' home ranges are ",
+  dfAgents <- data.frame(1:df$numberAgents)
+  dfAgents$agentID <- seq(1:df$numberAgents)
+  dfAgents <- dfAgents[-1]
+  dfAgents$dimensions <- df$dimensions
+  dfAgents$xCor <- runif(df$numberAgents, 0 - df$worldDiameterMeters / 2, df$worldDiameterMeters / 2)
+  dfAgents$yCor <- runif(df$numberAgents, 0 - df$worldDiameterMeters / 2, df$worldDiameterMeters / 2)
+  dfAgents$xCorOrigin <- dfAgents$xCor
+  dfAgents$yCorOrigin <- dfAgents$yCor
+  dfAgents$zCor <- ifelse(df$dimensions == 3,
+                          runif(df$numberAgents, 0 - df$worldDiameterMeters / 2, df$worldDiameterMeters / 2), NA)
+  dfAgents$zCorOrigin <- ifelse(df$dimensions == 3, dfAgents$zCor, NA)
+  dfAgents$Age <- abs(rnorm(df$numberAgents, 9, 4))
+  dfAgents$Sex = as.factor(ifelse(sample(1:2, 1) == 1, "M", "F"))
+  dfAgents$Mass <- abs(rnorm(df$numberAgents, 20, 5))
+  dfAgents$Heading1 <- runif(df$numberAgents, 0, 360)
+  dfAgents$Heading2 <- runif(df$numberAgents, 0, 360)
+  dfAgents$homeRangeMetersDim <- ifelse(dfAgents$Sex == "F",
+                                        rnorm(df$numberAgents, df$meanFemaleRangeMetersDim, df$sdFemaleRangeMetersDim),
+                                        rnorm(df$numberAgents, df$meanMaleRangeMetersDim, df$sdMaleRangeMetersDim))
+  dfAgents$homeRangeRadius <- sqrt(dfAgents$homeRangeMetersDim/pi)
+  dfAgents$dayRangeMeters <- ifelse(dfAgents$Sex == "F",
+                                    rnorm(df$numberAgents, df$meanFemaleDayRange, df$sdFemaleDayRange),
+                                   rnorm(df$numberAgents, df$meanMaleDayRange, df$sdMaleDayRange))
+  dfAgents$metersPerHour <- ifelse(dfAgents$Sex == "F",
+                                   rnorm(df$numberAgents, df$meanFemaleMetersPerHour, df$sdFemaleMetersPerHour),
+                                    rnorm(df$numberAgents, df$meanMaleMetersPerHour, df$sdMaleMetersPerHour))
+  print(paste("This ", df$dimensions, "-dimensional model world is ", round(df$worldSizeMetersDim,2), " m^",
+                   df$dimensions,". Its ", length(dfAgents$Sex[dfAgents$Sex == "F"]), " female residents' home ranges are ",
+                   round(df$meanFemaleRangeMetersDim ,2), " m^", df$dimensions, " on average.", sep = ""), 1)
+  print(paste("This ", df$dimensions, "-dimensional model world is ", round(df$worldSizeMetersDim,2), " m^", df$dimensions,
+             ". Its ", length(df$Sex[dfAgents$Sex == "M"]), " male residents' home ranges are ",
              round(df$meanMaleRangeMetersDim ,2), " m^", df$dimensions, " on average.", sep = ""), 1)
+
+  return(dfAgents)
 }
