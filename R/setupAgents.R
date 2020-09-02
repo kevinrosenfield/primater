@@ -7,7 +7,7 @@ setupAgents <- function(df = dfABM) {
     )
   dfAgent$xCorOrigin = dfAgent$xCor
   dfAgent$yCorOrigin = dfAgent$yCor
-  if (dfParams$Dimensions == 3)  {
+  if (df$Dimensions == 3)  {
     dfAgent$zCor = runif(df$numberAgents, 0 - df$worldDiameterMeters / 2, df$worldDiameterMeters / 2)
     dfAgent$zCorOrigin = dfAgent$zCor
     }
