@@ -11,7 +11,7 @@ setupAgents <- function(df = dfABM) {
                           runif(df$numberAgents, 0 - df$worldDiameterMeters / 2, df$worldDiameterMeters / 2), NA)
   dfAgents$zCorOrigin <- ifelse(df$dimensions == 3, dfAgents$zCor, NA)
   dfAgents$Age <- abs(rnorm(df$numberAgents, 9, 4))
-  dfAgents$Sex = as.factor(ifelse(sample(1:2, 1) == df$numberAgents, "M", "F"))
+  dfAgents$Sex = as.factor(ifelse(sample(1:2, df$numberAgents) == 1, "M", "F"))
   dfAgents$Mass <- abs(rnorm(df$numberAgents, 20, 5))
   dfAgents$Heading1 <- runif(df$numberAgents, 0, 360)
   dfAgents$Heading2 <- runif(df$numberAgents, 0, 360)
