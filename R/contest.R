@@ -20,8 +20,8 @@ findContests <- function(dist = distances, df = dfAgents) {
 contests <- function(dfChallengers = challengers, df = dfAgents) {
   winners = list()
   losers = list
-  winProbs <- data.frame((dfChallengers$Mass1 + dfChallengers$Mass2) / dfChallengers$Mass1,
-                       (dfChallengers$Mass1 + dfChallengers$Mass2) / dfChallengers$Mass2)
+  winProbs <- data.frame(dfChallengers$Mass1 / (dfChallengers$Mass1 + dfChallengers$Mass2),
+                         dfChallengers$Mass2 / (dfChallengers$Mass1 + dfChallengers$Mass2))
   for (n in 1:length(dfChallengers$agent1)) {
     winners <- append(winners, ifelse(sample(1:2, 1, prob = winProbs[n,]) == 1, dfChallengers$agent1[n], dfChallengers$agent2[n]))
   }
@@ -29,8 +29,6 @@ contests <- function(dfChallengers = challengers, df = dfAgents) {
   losers <- ifelse(winners == dfChallengers$agent1, dfChallengers$agent2, dfChallengers$agent1)
   outcomes <- data.frame(winners, losers)
   for (w in winners) {df$Wins[dfAgents$agentID == w] <- df$Wins[df$agentID == w] + 1}
-  for (l in losers) {df$Losses[dfAgents$agentID ==l] <- df$Losses[df$agentID == l] + 1}
+  for (l in losers) {df$Losses[dfAgents$agentID == l] <- df$Losses[df$agentID == l] + 1}
   return(df)
-  #return(winProbs)
-  #return(paste("agent", sample(1:2, 1, prob = c(winProbs)), sep = ""))
 }
