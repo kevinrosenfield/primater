@@ -1,4 +1,4 @@
-setupAgents <- function(df = dfABM) {
+setupAgentsTest <- function(df = dfABM) {
   dfAgent <- data.frame(
     "agentID" <- seq(1:df$numberAgents),
     "dimensions" <- df$dimensions,
@@ -19,14 +19,14 @@ setupAgents <- function(df = dfABM) {
   dfAgent$homeRangeMetersDim <- ifelse(dfAgent$Sex == "F", rnorm(1, df$meanFemaleRangeMetersDim, df$sdFemaleRangeMetersDim),
                                                                  rnorm(1, df$meanMaleRangeMetersDim, df$sdMaleRangeMetersDim))
   dfAgent$homeRangeRadius <- sqrt(dfAgent$homeRangeMetersDim/pi)
-  dfAgent$dayRangeMeters <- ifelse(dfAgent$Sex[i] == "F", rnorm(1, df$meanFemaleDayRange, df$sdFemaleDayRange),
+  dfAgent$dayRangeMeters <- ifelse(dfAgent$Sex == "F", rnorm(1, df$meanFemaleDayRange, df$sdFemaleDayRange),
                                    rnorm(1, df$meanMaleDayRange, df$sdMaleDayRange))
-  dfAgent$metersPerHour <- ifelse(dfAgent$Sex[i] == "M", rnorm(1, df$meanMaleMetersPerHour, df$sdMaleMetersPerHour),
+  dfAgent$metersPerHour <- ifelse(dfAgent$Sex == "M", rnorm(1, df$meanMaleMetersPerHour, df$sdMaleMetersPerHour),
                                     rnorm(1, df$meanFemaleMetersPerHour, df$sdFemaleMetersPerHour))
-  head(paste("This ", df$dimensions, "-dimensional model world is ", round(dfModel$worldSizeMetersDim,2), " m^", df$dimensions,
+  head(paste("This ", df$dimensions, "-dimensional model world is ", round(df$worldSizeMetersDim,2), " m^", df$dimensions,
              ". Its ", length(dfAgent$Sex[dfAgent$Sex == "F"]), " female residents' home ranges are ",
-             round(dfModel$meanFemaleRangeMetersDim ,2), " m^", df$dimensions, " on average.", sep = ""), 1)
-  head(paste("This ", df$dimensions, "-dimensional model world is ", round(dfModel$worldSizeMetersDim,2), " m^", df$dimensions,
-             ". Its ", length(dfAgent$Sex[dfAgent$Sex == "M"]), " male residents' home ranges are ",
-             round(dfModel$meanMaleRangeMetersDim ,2), " m^", df$dimensions, " on average.", sep = ""), 1)
+             round(df$meanFemaleRangeMetersDim ,2), " m^", df$dimensions, " on average.", sep = ""), 1)
+  head(paste("This ", df$dimensions, "-dimensional model world is ", round(df$worldSizeMetersDim,2), " m^", df$dimensions,
+             ". Its ", length(df$Sex[dfAgent$Sex == "M"]), " male residents' home ranges are ",
+             round(df$meanMaleRangeMetersDim ,2), " m^", df$dimensions, " on average.", sep = ""), 1)
 }
