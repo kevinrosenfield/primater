@@ -7,7 +7,7 @@ setupAgents <- function(df = dfABM) {
     )
   dfAgent$xCorOrigin = dfAgent$xCor
   dfAgent$yCorOrigin = dfAgent$yCor
-  if (df$Dimensions == 3)  {
+  if (df$dimensions == 3)  {
     dfAgent$zCor = runif(df$numberAgents, 0 - df$worldDiameterMeters / 2, df$worldDiameterMeters / 2)
     dfAgent$zCorOrigin = dfAgent$zCor
     }
@@ -23,10 +23,10 @@ setupAgents <- function(df = dfABM) {
                                    rnorm(1, df$meanMaleDayRange, df$sdMaleDayRange))
   dfAgent$metersPerHour <- ifelse(dfAgent$Sex[i] == "M", rnorm(1, df$meanMaleMetersPerHour, df$sdMaleMetersPerHour),
                                     rnorm(1, df$meanFemaleMetersPerHour, df$sdFemaleMetersPerHour))
-  head(paste("This ", df$Dimensions, "-dimensional model world is ", round(dfModel$worldSizeMetersDim,2), " m^", df$dimensions,
+  head(paste("This ", df$dimensions, "-dimensional model world is ", round(dfModel$worldSizeMetersDim,2), " m^", df$dimensions,
              ". Its ", length(dfAgent$Sex[dfAgent$Sex == "F"]), " female residents' home ranges are ",
-             round(dfModel$meanFemaleRangeMetersDim ,2), " m^", df$Dimensions, " on average.", sep = ""), 1)
-  head(paste("This ", df$Dimensions, "-dimensional model world is ", round(dfModel$worldSizeMetersDim,2), " m^", df$dimensions,
+             round(dfModel$meanFemaleRangeMetersDim ,2), " m^", df$dimensions, " on average.", sep = ""), 1)
+  head(paste("This ", df$dimensions, "-dimensional model world is ", round(dfModel$worldSizeMetersDim,2), " m^", df$dimensions,
              ". Its ", length(dfAgent$Sex[dfAgent$Sex == "M"]), " male residents' home ranges are ",
-             round(dfModel$meanMaleRangeMetersDim ,2), " m^", df$Dimensions, " on average.", sep = ""), 1)
+             round(dfModel$meanMaleRangeMetersDim ,2), " m^", df$dimensions, " on average.", sep = ""), 1)
 }
