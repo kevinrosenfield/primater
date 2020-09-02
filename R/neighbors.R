@@ -1,16 +1,21 @@
 
-distances2D <- function(df = dfAgents, numberAgents = model$numberAgents) {
+distances2D <- function(df = dfAgents, numberAgents = dfABM$numberAgents) {
   neighbors <- matrix(c(df$agentID, df$xCor, df$yCor), numberAgents, 3)
+  distances = list()
   for (i in 1:numberAgents) {
-    sqrt((neighbors[,2][i] - neighbors[,2])^2 + (neighbors[,3][i] - neighbors[,3])^2)
+    distancesAgent <- list(sqrt((neighbors[,2][i] - neighbors[,2])^2 + (neighbors[,3][i] - neighbors[,3])^2))
+    distances <- c(distances, distancesAgent)
   }
-  return(neighbors)
+  return(distances)
 }
 
 distances3D <- function(df = dfAgent, numberAgents = model$numberAgents) {
   neighbors <- matrix(c(df$agentID, df$xCor, df$yCor, df$zCor), numberAgents, 4)
+  distances = list()
   for (i in 1:numberAgents) {
-    sqrt((neighbors[,2][i] - neighbors[,2])^2 + (neighbors[,3][i] - neighbors[,3])^2 + (neighbors[,4][i] - neighbors[,4])^2)
+    distancesAgent <- list(sqrt((neighbors[,2][i] - neighbors[,2])^2 + (neighbors[,3][i] - neighbors[,3])^2 +
+                                  (neighbors[,4][i] - neighbors[,4])^2))
+    distances <- c(distances, distancesAgent)
     }
-  return(neighbors)
+  return(distances)
   }

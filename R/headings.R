@@ -18,11 +18,11 @@ setHeading3D <- function(df = dfAgent, numberAgents = dfABM$numberAgents) {
 
 reverseHeading2D <- function(df = dfAgent) {
   df$Heading1 = ifelse(df$Heading1 > 180, df$Heading1 - 180, df$Heading1 + 180)
-  return(df$Heading1)
+  return(df)
 }
 
 reverseHeading3D <- function(df = dfAgent) {
   df$Heading1 = ifelse(df$Heading1 > 180, df$Heading1 - 180, df$Heading1 + 180)
   df$Heading2 = ifelse(df$Heading2 > 180, df$Heading2 - 180, df$Heading2 + 180)
-  return(c(df$Heading1, df$Heading2))
+  return(df)
 }

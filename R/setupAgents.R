@@ -13,11 +13,13 @@ setupAgents <- function(df = dfABM) {
   dfAgents$Age <- abs(rnorm(df$numberAgents, 9, 4))
   dfAgents$Sex = as.factor(ifelse(sample(1:2, df$numberAgents, replace = TRUE) == 1, "M", "F"))
   dfAgents$Mass <- abs(rnorm(df$numberAgents, 20, 5))
+  dfAgents$Wins <- rep(0, df$numberAgents)
+  dfAgents$Losses <- rep(0, df$numberAgents)
   dfAgents$Heading1 <- runif(df$numberAgents, 0, 360)
   dfAgents$Heading2 <- runif(df$numberAgents, 0, 360)
   dfAgents$homeRangeMetersDim <- ifelse(dfAgents$Sex == "F",
-                                        rnorm(df$numberAgents, df$meanFemaleRangeMetersDim, df$sdFemaleRangeMetersDim),
-                                        rnorm(df$numberAgents, df$meanMaleRangeMetersDim, df$sdMaleRangeMetersDim))
+                                        abs(rnorm(df$numberAgents, df$meanFemaleRangeMetersDim, df$sdFemaleRangeMetersDim)),
+                                        abs(rnorm(df$numberAgents, df$meanMaleRangeMetersDim, df$sdMaleRangeMetersDim)))
   dfAgents$homeRangeRadius <- sqrt(dfAgents$homeRangeMetersDim/pi)
   dfAgents$dayRangeMeters <- ifelse(dfAgents$Sex == "F",
                                     rnorm(df$numberAgents, df$meanFemaleDayRange, df$sdFemaleDayRange),
