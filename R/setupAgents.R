@@ -11,7 +11,7 @@ setupAgents <- function(df = dfABM) {
                           runif(df$numberAgents, 0 - df$worldDiameterMeters / 2, df$worldDiameterMeters / 2), NA)
   dfAgents$zCorOrigin <- ifelse(df$dimensions == 3, dfAgents$zCor, NA)
   dfAgents$Age <- abs(rnorm(df$numberAgents, 9, 4))
-  dfAgents$Sex = as.factor(ifelse(sample(1:2, 1) == 1, "M", "F"))
+  dfAgents$Sex = as.factor(ifelse(sample(1:2, 1) == df$numberAgents, "M", "F"))
   dfAgents$Mass <- abs(rnorm(df$numberAgents, 20, 5))
   dfAgents$Heading1 <- runif(df$numberAgents, 0, 360)
   dfAgents$Heading2 <- runif(df$numberAgents, 0, 360)
@@ -29,7 +29,7 @@ setupAgents <- function(df = dfABM) {
                    df$dimensions,". Its ", length(dfAgents$Sex[dfAgents$Sex == "F"]), " female residents' home ranges are ",
                    round(df$meanFemaleRangeMetersDim ,2), " m^", df$dimensions, " on average.", sep = ""), 1)
   print(paste("This ", df$dimensions, "-dimensional model world is ", round(df$worldSizeMetersDim,2), " m^", df$dimensions,
-             ". Its ", length(df$Sex[dfAgents$Sex == "M"]), " male residents' home ranges are ",
+             ". Its ", length(dfAgents$Sex[dfAgents$Sex == "M"]), " male residents' home ranges are ",
              round(df$meanMaleRangeMetersDim ,2), " m^", df$dimensions, " on average.", sep = ""), 1)
 
   return(dfAgents)
