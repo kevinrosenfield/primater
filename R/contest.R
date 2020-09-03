@@ -24,8 +24,9 @@ findContests <- function(dist = distances, df = dfAgents) {
     challengers <- data.frame(t(matrix(unlist(challengers), ncol = length(challengers))))
     colnames(challengers) <- c("agent1", "Mass1", "agent2", "Mass2")
     dupes <- data.frame(t(apply(challengers[c(1,3)], 1, sort))) %>% unique()
-    print(dupes)
+    print(dupes[2])
     print(challengers) # something is wrong btwn here and end
+    challengers %>% filter(agent1 %in% dupes[2])
     challengers <- challengers %>% filter(agent1 %in% dupes[2])
     return(challengers)
   }
