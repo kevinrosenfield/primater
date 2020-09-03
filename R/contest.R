@@ -1,20 +1,28 @@
+#
 
 findContests <- function(dist = distances, df = dfAgents) {
   challengers = list()
   i = 1
   for (d in dist) {
     newChallengers = c(i, min(d[d > 0]), round(match(min(d[d > 0]), d), 0))
-    if(newChallengers[2] < 50)  {
+    if(newChallengers[2] < 50 &
+       dfAgents$Sex[dfAgents$agentID == newChallengers[1]] == "M" &
+       dfAgents$Sex[dfAgents$agentID == newChallengers[3]] == "M")  {
       challenge <- c(dfAgents[dfAgents$agentID == i,c("agentID","Mass")], dfAgents[newChallengers[3], c("agentID","Mass")])
       challengers <- append(challengers, list(challenge))
       }
     i = i + 1
   }
-  challengers <- data.frame(t(matrix(unlist(challengers), ncol = length(challengers))))
-  colnames(challengers) <- c("agent1", "Mass1", "agent2", "Mass2")
-  dupes <- data.frame(t(apply(challengers[c(1,3)], 1, sort))) %>% unique() %>% select(X2)
-  challengers <- challengers %>% filter(agent1 %in% dupes$X2)
-  return(challengers)
+  if (length(challengers) < 1) {
+    stop()
+  } else {
+    challengers <- data.frame(t(matrix(unlist(challengers), ncol = length(challengers))))
+    colnames(challengers) <- c("agent1", "Mass1", "agent2", "Mass2")
+    dupes <- data.frame(t(apply(challengers[c(1,3)], 1, sort))) %>% unique() %>% select(X2)
+    challengers <- challengers %>% filter(agent1 %in% dupes$X2)
+    print(challengers)
+    return(challengers)
+  }
 }
 
 contests <- function(dfChallengers = challengers, df = dfAgents) {
