@@ -35,7 +35,7 @@ findContests <- function(dist = distances, df = dfAgents) {
 
 contests <- function(dfChallengers = challengers, df = dfAgents) {
   winners = list()
-  losers = list
+  losers = list()
   winProbs <- data.frame(dfChallengers$Mass1 / (dfChallengers$Mass1 + dfChallengers$Mass2),
                          dfChallengers$Mass2 / (dfChallengers$Mass1 + dfChallengers$Mass2))
   for (n in 1:length(dfChallengers$agent1)) {
