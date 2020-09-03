@@ -10,7 +10,7 @@ findContests <- function(dist = distances, df = dfAgents) {
   i = 1
   for (d in dist) {
     newChallengers = c(i, min(d[d > 0]), round(match(min(d[d > 0]), d), 0))
-    if(newChallengers[2] < 50 &
+    if(newChallengers[2] < 300 &
        dfAgents$Sex[dfAgents$agentID == newChallengers[1]] == "M" &
        dfAgents$Sex[dfAgents$agentID == newChallengers[3]] == "M")  {
       challenge <- c(dfAgents[dfAgents$agentID == i,c("agentID","Mass")], dfAgents[newChallengers[3], c("agentID","Mass")])
@@ -23,8 +23,10 @@ findContests <- function(dist = distances, df = dfAgents) {
   } else {
     challengers <- data.frame(t(matrix(unlist(challengers), ncol = length(challengers))))
     colnames(challengers) <- c("agent1", "Mass1", "agent2", "Mass2")
-    dupes <- data.frame(t(apply(challengers[c(1,3)], 1, sort))) %>% unique() %>% select(X2)
-    challengers <- challengers %>% filter(agent1 %in% dupes$X2)
+    dupes <- data.frame(t(apply(challengers[c(1,3)], 1, sort))) %>% unique()
+    print(dupes)
+    print(challengers) # something is wrong btwn here and end
+    challengers <- challengers %>% filter(agent1 %in% dupes[2])
     return(challengers)
   }
 }

@@ -9,7 +9,7 @@ distances2D <- function(df = dfAgents, numberAgents = dfABM$numberAgents) {
   return(distances)
 }
 
-distances3D <- function(df = dfAgent, numberAgents = model$numberAgents) {
+distances3D <- function(df = dfAgents, numberAgents = dfABM$numberAgents) {
   neighbors <- matrix(c(df$agentID, df$xCor, df$yCor, df$zCor), numberAgents, 4)
   distances = list()
   for (i in 1:numberAgents) {
