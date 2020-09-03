@@ -1,4 +1,9 @@
-#
+# findContests() - males determine which other male is closest to themselves, and challenge them if under a specified threshold
+# i tracks agentIds, min(d[d > 0]) find the smallest distance in the list of distances for a given individual
+# round(match(min(d[d > 0]), d), 0) gives the position number (agentID) corresponding to the smallest distance
+# if statement excludes nearest neighbors if either individual is female, or if the distance is above a specified threshold
+# challenge stores relevant information. Here, agentID and Mass for both competitions
+# challengers makes a lists of all contests to process; further code cleans up the format and removes duplicate contests
 
 findContests <- function(dist = distances, df = dfAgents) {
   challengers = list()
@@ -24,6 +29,10 @@ findContests <- function(dist = distances, df = dfAgents) {
     return(challengers)
   }
 }
+
+# contests - contests in the challengers list are processed
+# the variable(s) that influence contest outcome, here Mass, are weighted and entered as outcome probabilities
+# wins and losses are applied to their respective columns in dfAgents and an updated dfAgents is returned
 
 contests <- function(dfChallengers = challengers, df = dfAgents) {
   winners = list()
