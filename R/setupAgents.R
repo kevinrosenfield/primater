@@ -1,3 +1,4 @@
+
 setupAgents <- function(df = dfABM) {
   dfAgents <- data.frame(1:df$numberAgents)
   dfAgents$agentID <- seq(1:df$numberAgents)

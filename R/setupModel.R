@@ -1,6 +1,6 @@
 setupABM <- function(dimensions = 2) {
   model <-  list(
-    "numberAgents" = sample(1:100, 1),
+    "numberAgents" = sample(2:100, 1),
     "Territorial" = sample(c(FALSE, TRUE), 1),
     "worldDiameterMeters" = runif(1, 25, 1000),
     "dimensions" = dimensions,
