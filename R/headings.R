@@ -17,7 +17,7 @@ setHeading3D <- function(df = dfAgent, numberAgents = dfABM$numberAgents) {
 # turn around if agent has left the world
 
 reverseHeading2D <- function(df = dfAgents) {
-  for (agent in 1:dfAgents$agentID) {
+  for (agent in dfAgents$agentID) {
     df$Heading1[agent] <- while (abs(df$homeRangeRadius[agent]) < abs(df$xCorOrigin[agent] - df$xCor[agent]) |
                                  abs(df$homeRangeRadius[agent]) < abs(df$yCorOrigin[agent] - df$yCor[agent])) {
       df$xCor[agent] = df$xCor[agent] - (df$metersPerHour[agent] * cos(df$Heading1[agent]))
