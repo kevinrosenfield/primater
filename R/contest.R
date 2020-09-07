@@ -9,13 +9,13 @@
 compete <- function(dist.mat = distances, df = dfAgents, reach = 1000) {
   dist.mat[dist.mat > reach] <- NA
   for (a in 1:dfABM$numberAgents) {
-    if (dfAgents$Sex[a] == "F") {
+    if (df$Sex[a] == "F") {
       dist.mat[a,] <- NA
       dist.mat[,a] <- NA
     }
     if (!all(is.na(dist.mat[a,]))) {
       opponent <- which.min(distances[a,])[[1]]
-      winner <- sample(c(a, opponent), 1, prob = c(dfAgents$Mass[a], dfAgents$Mass[opponent]))
+      winner <- sample(c(a, opponent), 1, prob = c(df$Mass[a], df$Mass[opponent]))
       loser <- ifelse(winner == a, opponent, a)
       df$Wins[winner] <- df$Wins[winner] + 1
       df$Losses[loser] <- df$Losses[loser] + 1
