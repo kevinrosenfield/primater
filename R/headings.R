@@ -17,8 +17,12 @@ setHeading3D <- function(df = dfAgent, numberAgents = dfABM$numberAgents) {
 # turn around if agent has left the world
 
 reverseHeading2D <- function(df = dfAgents) {
-  df$Heading1 <- ifelse(abs(df$homeRangeRadius) < abs(df$xCorOrigin - df$xCor) | abs(df$homeRangeRadius) < abs(df$yCorOrigin - df$yCor),
-    ifelse(df$Heading1 > 180, df$Heading1 - 180, df$Heading1 + 180), df$Heading1)
+  df$Heading1 <- while (abs(df$homeRangeRadius) < abs(df$xCorOrigin - df$xCor) | abs(df$homeRangeRadius) < abs(df$yCorOrigin - df$yCor)) {
+    df$Heading1 <- ifelse(df$Heading1 > 180, df$Heading1 - 180, df$Heading1 + 180)
+    move2D()
+    setHeading2D()
+    move2D()
+  }
   return(df)
 }
 
