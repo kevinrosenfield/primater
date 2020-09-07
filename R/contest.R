@@ -5,46 +5,21 @@
 # challenge stores relevant information. Here, agentID and Mass for both competitions
 # challengers makes a lists of all contests to process; further code cleans up the format and removes duplicate contests
 
-findContests <- function(dist = distances, df = dfAgents) {
-  challengers = list()
-  i = 1
-  for (d in 1:length(dist)) {
-    newChallengers = c(i, sort(dist[[d]])[2], round(match(sort(dist[[d]])[2], dist[[d]]), 0))
-    if(newChallengers[2] < 300 &
-       dfAgents$Sex[dfAgents$agentID == newChallengers[1]] == "M" &
-       dfAgents$Sex[dfAgents$agentID == newChallengers[3]] == "M")  {
-      challenge <- c(dfAgents[dfAgents$agentID == i,c("agentID","Mass")], dfAgents[newChallengers[3], c("agentID","Mass")])
-      challengers <- append(challengers, list(challenge))
-      }
-    i = i + 1
-  }
-  if (length(challengers) > 0) {
-    challengers <- data.frame(t(matrix(unlist(challengers), ncol = length(challengers))))
-    colnames(challengers) <- c("agent1", "Mass1", "agent2", "Mass2")
-    dupes <- data.frame(t(apply(challengers[c(1,3)], 1, sort))) %>% unique()
-    challengers <- challengers %>% filter(agent1 %in% dupes$X2)
-  }
-  return(challengers)
-}
 
-# contests - contests in the challengers list are processed
-# the variable(s) that influence contest outcome, here Mass, are weighted and entered as outcome probabilities
-# wins and losses are applied to their respective columns in dfAgents and an updated dfAgents is returned
-
-contests <- function(dfChallengers = challengers, df = dfAgents) {
-  if (length(challengers$agent1) > 0) {
-    winners = list()
-    losers = list()
-    winProbs <- data.frame(dfChallengers$Mass1 / (dfChallengers$Mass1 + dfChallengers$Mass2),
-                           dfChallengers$Mass2 / (dfChallengers$Mass1 + dfChallengers$Mass2))
-    for (n in 1:length(dfChallengers$agent1)) {
-      winners <- append(winners, ifelse(sample(1:2, 1, prob = winProbs[n,]) == 1, dfChallengers$agent1[n], dfChallengers$agent2[n]))
+compete <- function(dist.mat = distances, df = dfAgents, reach = 1000) {
+  dist.mat[dist.mat > reach] <- NA
+  for (a in 1:dfABM$numberAgents) {
+    if (dfAgents$Sex[a] == "F") {
+      dist.mat[a,] <- NA
+      dist.mat[,a] <- NA
     }
-    winners <- unlist(winners)
-    losers <- ifelse(winners == dfChallengers$agent1, dfChallengers$agent2, dfChallengers$agent1)
-    outcomes <- data.frame(winners, losers)
-    for (w in winners) {df$Wins[dfAgents$agentID == w] <- df$Wins[df$agentID == w] + 1}
-    for (l in losers) {df$Losses[dfAgents$agentID == l] <- df$Losses[df$agentID == l] + 1}
+    if (!all(is.na(dist.mat[a,]))) {
+      opponent <- which.min(distances[a,])[[1]]
+      winner <- sample(c(a, opponent), 1, prob = c(dfAgents$Mass[a], dfAgents$Mass[opponent]))
+      loser <- ifelse(winner == a, opponent, a)
+      df$Wins[winner] <- df$Wins[winner] + 1
+      df$Losses[loser] <- df$Losses[loser] + 1
+    }
   }
   return(df)
 }

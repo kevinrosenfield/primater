@@ -1,11 +1,15 @@
 
 distances2D <- function(df = dfAgents, numberAgents = dfABM$numberAgents) {
   neighbors <- matrix(c(df$agentID, df$xCor, df$yCor), numberAgents, 3)
-  distances = list()
+  distances = matrix(ncol = numberAgents)
   for (i in 1:numberAgents) {
-    distancesAgent <- list(sqrt((neighbors[,2][i] - neighbors[,2])^2 + (neighbors[,3][i] - neighbors[,3])^2))
-    distances <- c(distances, distancesAgent)
+    distancesAgent <- c(sqrt((neighbors[,2][i] - neighbors[,2])^2 + (neighbors[,3][i] - neighbors[,3])^2))
+    distances <- rbind(distances, distancesAgent)
   }
+  distances <- distances[-1,]
+  row.names(distances) <- c(1:numberAgents)
+  colnames(distances) <- c(1:numberAgents)
+  distances[upper.tri(distances, diag = TRUE) == TRUE] <- NA
   return(distances)
 }
 
