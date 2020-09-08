@@ -14,7 +14,7 @@ compete <- function(dist.mat = distances, df = dfAgents, reach = 1000) {
       dist.mat[,a] <- NA
     }
     if (!all(is.na(dist.mat[a,]))) {
-      opponent <- which.min(distances[a,])[[1]]
+      opponent <- which.min(dist.mat[a,])[[1]]
       winner <- sample(c(a, opponent), 1, prob = c(df$Mass[a], df$Mass[opponent]))
       loser <- ifelse(winner == a, opponent, a)
       df$Wins[winner] <- df$Wins[winner] + 1

@@ -16,4 +16,9 @@ move3D <- function(df = dfAgents) {
   df$zCor = df$zCor + (df$metersPerHour * cos(df$Heading2) * cos(df$Heading1))
   df$Age = df$Age + 0.0001141553
   return(df)
-  }
+}
+
+lookHome <- function(df = dfAgents) {
+  df$distFromHome <- sqrt((dfAgents$xCor - dfAgents$xCorOrigin)^2 + (dfAgents$xCor - dfAgents$xCorOrigin)^2)
+  return(df$distFromHome)
+}
