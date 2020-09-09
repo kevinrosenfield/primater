@@ -2,7 +2,7 @@
 
 setHeading2D <- function(df = dfAgents, numberAgents = dfABM$numberAgents) {
   df$Heading1 <- ifelse(df$distFromHome < df$homeRangeRadius - df$metersPerHour,
-                        df$Heading1 + rnorm(numberAgents, 0, 20), setHeadingHome(df$Heading1))
+                        df$Heading1 + rnorm(numberAgents, 0, 20), df$Heading1 - 180)
   df$Heading1 = ifelse(df$Heading1 >= 360 | df$Heading1 < 0, abs(abs(df$Heading1) - 360), df$Heading1)
   return(df)
 }

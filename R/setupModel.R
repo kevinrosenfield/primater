@@ -1,8 +1,8 @@
-setupABM <- function(dimensions = 2, numberAgents = sample(2:100, 1)) {
+setupABM <- function(dimensions = 2, numberAgents = sample(2:100, 1), worldDiameter = runif(1, 25, 1000)) {
   model <-  list(
     "numberAgents" = numberAgents,
     "Territorial" = sample(c(FALSE, TRUE), 1),
-    "worldDiameterMeters" = runif(1, 25, 1000),
+    "worldDiameterMeters" = worldDiameter,
     "dimensions" = dimensions,
     "dailyActivityProp" = abs(rnorm(1, 12, 2.5)))
   model <- c(

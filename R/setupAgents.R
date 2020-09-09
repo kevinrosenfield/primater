@@ -15,8 +15,10 @@ setupAgents <- function(df = dfABM) {
   dfAgents$Age <- abs(rnorm(df$numberAgents, 9, 4))
   dfAgents$Sex = as.factor(ifelse(sample(1:2, df$numberAgents, replace = TRUE) == 1, "M", "F"))
   dfAgents$Mass <- abs(rnorm(df$numberAgents, 20, 5))
+  dfAgents$Attractiveness <- rnorm(df$numberAgents, 5, 1.66)
   dfAgents$Wins <- rep(0, df$numberAgents)
   dfAgents$Losses <- rep(0, df$numberAgents)
+  dfAgents$Mates <- rep(0, dfABM$numberAgents)
   dfAgents$Heading1 <- runif(df$numberAgents, 0, 360)
   dfAgents$Heading2 <- runif(df$numberAgents, 0, 360)
   dfAgents$homeRangeMetersDim <- ifelse(dfAgents$Sex == "F",

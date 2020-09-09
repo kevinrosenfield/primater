@@ -2,8 +2,8 @@
 # agents' age increases by 1 hour (1/365/24) during every time step
 
 move2D <- function(df = dfAgents) {
-  df$xCor = df$xCor + (df$metersPerHour * cos(df$Heading1))
-  df$yCor = df$yCor + (df$metersPerHour * sin(df$Heading1))
+  df$xCor = df$xCor + (df$metersPerHour * cos((df$Heading1) * (pi / 180)))
+  df$yCor = df$yCor + (df$metersPerHour * sin((df$Heading1) * (pi / 180)))
   df$Age = df$Age + 0.0001141553
   return(df)
 }
@@ -19,6 +19,6 @@ move3D <- function(df = dfAgents) {
 }
 
 lookHome <- function(df = dfAgents) {
-  df$distFromHome <- sqrt((dfAgents$xCor - dfAgents$xCorOrigin)^2 + (dfAgents$xCor - dfAgents$xCorOrigin)^2)
+  df$distFromHome <- sqrt((dfAgents$xCor - dfAgents$xCorOrigin)^2 + (dfAgents$yCor - dfAgents$yCorOrigin)^2)
   return(df$distFromHome)
 }

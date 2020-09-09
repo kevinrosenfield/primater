@@ -7,6 +7,7 @@
 
 
 compete <- function(dist.mat = distances, df = dfAgents, reach = 1000) {
+  dist.mat[upper.tri(dist.mat, diag = TRUE) == TRUE] <- NA
   dist.mat[dist.mat > reach] <- NA
   for (a in 1:dfABM$numberAgents) {
     if (df$Sex[a] == "F") {
@@ -23,3 +24,26 @@ compete <- function(dist.mat = distances, df = dfAgents, reach = 1000) {
   }
   return(df)
 }
+
+# sample from 0 ()with prob = 0 because when there is only 1 caller, sample is set tp 1:caller
+
+chooseMate <- function(dist.mat = distances, df = dfAgents, reach = 1000) {
+  dist.mat[dist.mat > reach] <- NA
+  for (a in 1:dfABM$numberAgents) {
+    if (df$Sex[a] == "F") {
+      dist.mat[,a] <- NA
+    } else {
+      dist.mat[a,] <- NA
+    }
+    if (!all(is.na(dist.mat[a,]))) {
+      callers <- match(dist.mat[a,][!is.na(dist.mat[a,])], dist.mat[a,])
+      mate <- sample(c(0, callers), size = 1, prob = c(0, df$Attractiveness[callers]))
+      rejects <- callers[-match(mate, callers)]
+      df$Mates[a] <- mate
+    }
+  }
+  return(df)
+}
+
+
+

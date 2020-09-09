@@ -9,7 +9,6 @@ distances2D <- function(df = dfAgents, numberAgents = dfABM$numberAgents) {
   distances <- distances[-1,]
   row.names(distances) <- c(1:numberAgents)
   colnames(distances) <- c(1:numberAgents)
-  distances[upper.tri(distances, diag = TRUE) == TRUE] <- NA
   return(distances)
 }
 
