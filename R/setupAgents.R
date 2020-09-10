@@ -44,9 +44,6 @@ setupAgents <- function(df = dfABM) {
        col = c(rep("blue", df$numberAgents), rep("red",  df$numberAgents)),
        bg = c(rep("green", df$numberAgents), rep("green",  df$numberAgents)),
        xlim=  c(0 - worldRadius, worldRadius), ylim = c(0 - worldRadius, worldRadius))
-  xCors <- list()
-  yCors <- list()
-  zCors <- list()
 
   print(paste("This ", df$dimensions, "-dimensional model world is ", round(df$worldSizeMetersDim,2), " m^",
                    df$dimensions,". Its ", length(dfAgents$Sex[dfAgents$Sex == "F"]), " female residents' home ranges are ",
