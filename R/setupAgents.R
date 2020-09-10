@@ -6,12 +6,17 @@ setupAgents <- function(df = dfABM) {
   dfAgents$dimensions <- df$dimensions
   dfAgents$xCor <- runif(df$numberAgents, 0 - df$worldDiameterMeters / 2, df$worldDiameterMeters / 2)
   dfAgents$yCor <- runif(df$numberAgents, 0 - df$worldDiameterMeters / 2, df$worldDiameterMeters / 2)
+  if (df$dimensions == 3) {
+    dfAgents$zCor <- runif(df$numberAgents, 0 - df$worldDiameterMeters / 2, df$worldDiameterMeters / 2)
+  } else {
+    dfAgents$zCor <- NA
+  }
+  if (dfABM$groupLiving == T) { dfAgents[c("xCor", "yCor", "zCor")] <- dfAgents[c("xCor", "yCor", "zCor")] / 2 }
   dfAgents$xCorOrigin <- dfAgents$xCor
   dfAgents$yCorOrigin <- dfAgents$yCor
+  dfAgents$zCorOrigin <- dfAgents$zCor
+  if (dfABM$groupLiving == T) { dfAgents[c("xCorOrigin", "yCorOrigin", "zCorOrigin")] <- 0 }
   dfAgents$distFromHome <- 0
-  dfAgents$zCor <- ifelse(df$dimensions == 3,
-                          runif(df$numberAgents, 0 - df$worldDiameterMeters / 2, df$worldDiameterMeters / 2), NA)
-  dfAgents$zCorOrigin <- ifelse(df$dimensions == 3, dfAgents$zCor, NA)
   dfAgents$Age <- abs(rnorm(df$numberAgents, 9, 4))
   dfAgents$Sex = as.factor(ifelse(sample(1:2, df$numberAgents, replace = TRUE) == 1, "M", "F"))
   dfAgents$Mass <- abs(rnorm(df$numberAgents, 20, 5))
@@ -31,6 +36,18 @@ setupAgents <- function(df = dfABM) {
   dfAgents$metersPerHour <- ifelse(dfAgents$Sex == "F",
                                    rnorm(df$numberAgents, df$meanFemaleMetersPerHour, df$sdFemaleMetersPerHour),
                                     rnorm(df$numberAgents, df$meanMaleMetersPerHour, df$sdMaleMetersPerHour))
+
+  cexSizes <- dfAgents$homeRangeRadius / (par("cin")[2]/par("pin")[1]) / (par("usr")[2] -
+                                                                            par("usr")[1]) / par("cex") / 0.1875
+  plot(c(dfAgents$xCorOrigin, dfAgents$yCor) ~ c(dfAgents$xCorOrigin, dfAgents$xCor),
+       pch=21, cex = c(cexSizes, rep(.2, df$numberAgents)),
+       col = c(rep("blue", df$numberAgents), rep("red",  df$numberAgents)),
+       bg = c(rep("green", df$numberAgents), rep("green",  df$numberAgents)),
+       xlim=  c(0 - worldRadius, worldRadius), ylim = c(0 - worldRadius, worldRadius))
+  xCors <- list()
+  yCors <- list()
+  zCors <- list()
+
   print(paste("This ", df$dimensions, "-dimensional model world is ", round(df$worldSizeMetersDim,2), " m^",
                    df$dimensions,". Its ", length(dfAgents$Sex[dfAgents$Sex == "F"]), " female residents' home ranges are ",
                    round(df$meanFemaleRangeMetersDim ,2), " m^", df$dimensions, " on average.", sep = ""), 1)
