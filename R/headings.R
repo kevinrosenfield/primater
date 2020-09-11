@@ -1,4 +1,8 @@
 
+setHeading <- function(df = dfAgents, numberAgents = dfABM$numberAgents){
+  df <- ifelse(dfABM$dimensions == 2, setHeading2D(df, numberAgents), setHeading3D(df, numberAgents))
+  return(df)
+}
 
 setHeading2D <- function(df = dfAgents, numberAgents = dfABM$numberAgents) {
   df$Heading1 <- ifelse(df$distFromHome < df$homeRangeRadius - df$metersPerHour,

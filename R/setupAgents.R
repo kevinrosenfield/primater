@@ -43,7 +43,7 @@ setupAgents <- function(df = dfABM) {
        pch=21, cex = c(cexSizes, rep(.2, df$numberAgents)),
        col = c(rep("blue", df$numberAgents), rep("red",  df$numberAgents)),
        bg = c(rep("green", df$numberAgents), rep("green",  df$numberAgents)),
-       xlim=  c(0 - worldRadius, worldRadius), ylim = c(0 - worldRadius, worldRadius))
+       xlim=  c(0 - df$worldRadius, df$worldRadius), ylim = c(0 - df$worldRadius, df$worldRadius))
 
   print(paste("This ", df$dimensions, "-dimensional model world is ", round(df$worldSizeMetersDim,2), " m^",
                    df$dimensions,". Its ", length(dfAgents$Sex[dfAgents$Sex == "F"]), " female residents' home ranges are ",
