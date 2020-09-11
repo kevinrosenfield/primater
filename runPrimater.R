@@ -12,7 +12,7 @@ detach('package:primater', unload = TRUE)
 library(primater); library(plotly); library(rethinking); library(tidyverse)
 
 setup(dimensions = 2, liveInGroup = F)
-go(reps = 1000, GIF = F, plot = T)
+go(reps = 1000, GIF = F, plot = T, contestPlot = F)
 plot(c(dfAgents$xCorOrigin, xCors), c(dfAgents$yCorOrigin, yCors), pch = 21,
      cex = c(cexSizes,rep(.2, length(xCors))),
      col = c(rep("blue", dfABM$numberAgents), rep("red",  length(xCors))),
@@ -45,9 +45,6 @@ for (i in 1:reps) {
 
 
 }
-
-
-
 
 dfAgents %>%
   filter(Sex == "M") %>%

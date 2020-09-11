@@ -23,6 +23,7 @@ setupAgents <- function(df = dfABM) {
   dfAgents$Attractiveness <- abs(rnorm(df$numberAgents, 5, 1.66))
   dfAgents$Wins <- rep(0, df$numberAgents)
   dfAgents$Losses <- rep(0, df$numberAgents)
+  dfAgents$winRatio <- 0
   dfAgents$Mates <- rep(0, dfABM$numberAgents)
   dfAgents$Heading1 <- runif(df$numberAgents, 0, 360)
   dfAgents$Heading2 <- runif(df$numberAgents, 0, 360)
@@ -37,6 +38,7 @@ setupAgents <- function(df = dfABM) {
                                    rnorm(df$numberAgents, df$meanFemaleMetersPerHour, df$sdFemaleMetersPerHour),
                                     rnorm(df$numberAgents, df$meanMaleMetersPerHour, df$sdMaleMetersPerHour))
 
+  try(rm(cexSizes))
   cexSizes <<- dfAgents$homeRangeRadius / (par("cin")[2]/par("pin")[1]) / (par("usr")[2] -
                                                                             par("usr")[1]) / par("cex") / 0.1875
 

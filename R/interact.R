@@ -28,6 +28,7 @@ compete <- function(dist.mat = distances, df = dfAgents, reach = 1000) {
       df$Losses[loser] <- df$Losses[loser] + 1
     }
   }
+  df$winRatio <- df$Wins / (df$Wins + df$Losses)
   return(df)
 }
 
