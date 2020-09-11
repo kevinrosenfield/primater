@@ -40,12 +40,6 @@ setupAgents <- function(df = dfABM) {
   cexSizes <<- dfAgents$homeRangeRadius / (par("cin")[2]/par("pin")[1]) / (par("usr")[2] -
                                                                             par("usr")[1]) / par("cex") / 0.1875
 
-  plot(c(dfAgents$xCorOrigin, dfAgents$yCor) ~ c(dfAgents$xCorOrigin, dfAgents$xCor),
-       pch=21, cex = c(cexSizes, rep(.2, df$numberAgents)),
-       col = c(rep("blue", df$numberAgents), rep("red",  df$numberAgents)),
-       bg = c(rep("green", df$numberAgents), rep("green",  df$numberAgents)),
-       xlim=  c(0 - df$worldRadius, df$worldRadius), ylim = c(0 - df$worldRadius, df$worldRadius))
-
   print(paste("This ", df$dimensions, "-dimensional model world is ", round(df$worldSizeMetersDim,2), " m^",
                    df$dimensions,". Its ", length(dfAgents$Sex[dfAgents$Sex == "F"]), " female residents' home ranges are ",
                    round(df$meanFemaleRangeMetersDim ,2), " m^", df$dimensions, " on average.", sep = ""), 1)

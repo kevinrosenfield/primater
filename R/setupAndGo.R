@@ -1,7 +1,6 @@
 
-setup <- function(dimensions = 2, numberAgents =  100, worldDiameter = 1000, liveInGroup = T) {
-  dfABM <<- setupABM(dimensions = dimensions, numberAgents =  numberAgents,
-                    worldDiameter = worldDiameter, liveInGroup = liveInGroup)
+setup <- function(dimensions = 2, numberAgents =  sample(2:100, 1), worldDiameter = runif(1, 25, 1000), liveInGroup = T) {
+  dfABM <<- setupABM(dimensions, numberAgents, worldDiameter, liveInGroup)
   dfAgents <<- setupAgents()
 
   reps <<-  10
@@ -15,6 +14,10 @@ go <- function(reps = reps, GIF = F, plot = F) {
     wd <- getwd()
     setwd("/Users/kevinrosenfield/Box/PSU/Dissertation/New dissertation/Figures")
   }
+  if (plot == T) {
+    #x11()
+    quartz(title = "agents", width = 5, height = 5)
+  }
   for (i in 1:reps) {
     distances <<- findNeighbors()
     dfAgents <<- chooseMate(reach = 100)
@@ -23,7 +26,7 @@ go <- function(reps = reps, GIF = F, plot = F) {
     dfAgents <<- interact()
     if (plot == T) {
       omit <- length(xCors) - dfABM$numberAgents
-      plot(c(dfAgents$xCorOrigin, xCors[-c(1:omit)]),
+      fig <- plot(c(dfAgents$xCorOrigin, xCors[-c(1:omit)]),
          c(dfAgents$yCorOrigin, yCors[-c(1:omit)]),
          pch = 21,
          cex = c(cexSizes,rep(.2, length(xCors[-c(1:omit)]))),

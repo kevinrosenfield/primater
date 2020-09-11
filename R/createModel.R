@@ -1,4 +1,5 @@
-setupABM <- function(dimensions = 2, numberAgents = sample(2:100, 1), worldDiameter = runif(1, 25, 1000), liveInGroup = F) {
+setupABM <- function(dimensions = dimensions, numberAgents = numberAgents,
+                     worldDiameter = worldDiameter, liveInGroup = liveInGroup) {
   model <-  list(
     "numberAgents" = numberAgents,
     "Territorial" = sample(c(FALSE, TRUE), 1),
