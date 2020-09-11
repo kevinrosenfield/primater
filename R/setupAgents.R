@@ -39,6 +39,7 @@ setupAgents <- function(df = dfABM) {
 
   cexSizes <- dfAgents$homeRangeRadius / (par("cin")[2]/par("pin")[1]) / (par("usr")[2] -
                                                                             par("usr")[1]) / par("cex") / 0.1875
+
   plot(c(dfAgents$xCorOrigin, dfAgents$yCor) ~ c(dfAgents$xCorOrigin, dfAgents$xCor),
        pch=21, cex = c(cexSizes, rep(.2, df$numberAgents)),
        col = c(rep("blue", df$numberAgents), rep("red",  df$numberAgents)),
@@ -54,3 +55,4 @@ setupAgents <- function(df = dfABM) {
 
   return(dfAgents)
 }
+

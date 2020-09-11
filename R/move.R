@@ -2,12 +2,12 @@
 # agents' age increases by 1 hour (1/365/24) during every time step
 
 move <- function(df = dfAgents){
-  df <- ifelse(dfABM$dimensions == 2, move2D(df), move3D(df))
+  df <- if (dfABM$dimensions == 2) { move2D(df) } else { move3D(df) }
   return(df)
 }
 
 lookHome <- function(df = dfAgents){
-  df$distFromHome <- ifelse(dfABM$dimensions == 2, lookHome(df), lookHome(df))
+  df$distFromHome <- if(dfABM$dimensions == 2) { lookHome2D(df) } else { lookHome3D(df) }
   return(df$distFromHome)
 }
 
