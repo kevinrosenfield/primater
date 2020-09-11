@@ -1,3 +1,4 @@
+
 setup <- function(dimensions = 2, numberAgents =  100, worldDiameter = 1000, liveInGroup = T) {
   dfABM <<- setupABM(dimensions = dimensions, numberAgents =  numberAgents,
                     worldDiameter = worldDiameter, liveInGroup = liveInGroup)
