@@ -1,17 +1,18 @@
 
-distances <- function(df = dfAgents, numberAgents = dfABM$numberAgents) {
-  neighbors <-
+findNeighbors <- function(df = dfAgents, numberAgents = dfABM$numberAgents) {
     if (dfABM$dimensions == 2) {
-      matrix(c(df$agentID, df$xCor, df$yCor), numberAgents, 3)
+      neighbors <- matrix(c(df$agentID, df$xCor, df$yCor), numberAgents, 3)
     } else {
-      matrix(c(df$agentID, df$xCor, df$yCor, df$zCor), numberAgents, 4)
+      neighbors <- matrix(c(df$agentID, df$xCor, df$yCor, df$zCor), numberAgents, 4)
     }
   distances = matrix(ncol = numberAgents)
   for (i in 1:numberAgents) {
-    distancesAgent <- ifelse(dfABM$dimensions == 2,
-                             c(sqrt((neighbors[,2][i] - neighbors[,2])^2 + (neighbors[,3][i] - neighbors[,3])^2)),
-                             c(sqrt((neighbors[,2][i] - neighbors[,2])^2 + (neighbors[,3][i] - neighbors[,3])^2 +
-                                      (neighbors[,4][i] - neighbors[,4])^2)))
+    if (dfABM$dimensions == 2) {
+      distancesAgent <- c(sqrt((neighbors[,2][i] - neighbors[,2])^2 + (neighbors[,3][i] - neighbors[,3])^2))
+    } else {
+      distancesAgent <- c(sqrt((neighbors[,2][i] - neighbors[,2])^2 + (neighbors[,3][i] - neighbors[,3])^2 +
+                                      (neighbors[,4][i] - neighbors[,4])^2))
+    }
     distances <- rbind(distances, distancesAgent)
   }
   distances <- distances[-1,]

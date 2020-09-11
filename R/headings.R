@@ -1,6 +1,6 @@
 
 setHeading <- function(df = dfAgents, numberAgents = dfABM$numberAgents){
-  df <- ifelse(dfABM$dimensions == 2, setHeading2D(df, numberAgents), setHeading3D(df, numberAgents))
+  if (dfABM$dimensions == 2) { df <- setHeading2D(df, numberAgents) } else { df <- setHeading3D(df, numberAgents) }
   return(df)
 }
 
