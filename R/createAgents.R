@@ -20,7 +20,7 @@ setupAgents <- function(df = dfABM) {
   dfAgents$Age <- abs(rnorm(df$numberAgents, 9, 4))
   dfAgents$Sex = as.factor(ifelse(sample(1:2, df$numberAgents, replace = TRUE) == 1, "M", "F"))
   dfAgents$Mass <- abs(rnorm(df$numberAgents, 20, 5))
-  dfAgents$Attractiveness <- rnorm(df$numberAgents, 5, 1.66)
+  dfAgents$Attractiveness <- abs(rnorm(df$numberAgents, 5, 1.66))
   dfAgents$Wins <- rep(0, df$numberAgents)
   dfAgents$Losses <- rep(0, df$numberAgents)
   dfAgents$Mates <- rep(0, dfABM$numberAgents)
@@ -37,7 +37,7 @@ setupAgents <- function(df = dfABM) {
                                    rnorm(df$numberAgents, df$meanFemaleMetersPerHour, df$sdFemaleMetersPerHour),
                                     rnorm(df$numberAgents, df$meanMaleMetersPerHour, df$sdMaleMetersPerHour))
 
-  cexSizes <- dfAgents$homeRangeRadius / (par("cin")[2]/par("pin")[1]) / (par("usr")[2] -
+  cexSizes <<- dfAgents$homeRangeRadius / (par("cin")[2]/par("pin")[1]) / (par("usr")[2] -
                                                                             par("usr")[1]) / par("cex") / 0.1875
 
   plot(c(dfAgents$xCorOrigin, dfAgents$yCor) ~ c(dfAgents$xCorOrigin, dfAgents$xCor),

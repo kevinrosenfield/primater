@@ -2,7 +2,12 @@
 # agents' age increases by 1 hour (1/365/24) during every time step
 
 move <- function(df = dfAgents){
+  df$distFromHome <- lookHome(df = df)
+  df <- setHeading(df = df, numberAgents = dfABM$numberAgents)
   df <- if (dfABM$dimensions == 2) { move2D(df) } else { move3D(df) }
+  xCors <<- append(xCors, dfAgents$xCor)
+  yCors <<- append(yCors, dfAgents$yCor)
+  zCors <<- append(zCors, dfAgents$zCor)
   return(df)
 }
 

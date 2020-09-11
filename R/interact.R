@@ -5,6 +5,12 @@
 # challenge stores relevant information. Here, agentID and Mass for both competitions
 # challengers makes a lists of all contests to process; further code cleans up the format and removes duplicate contests
 
+interact <- function(df = dfAgents, numberAgents = dfABM$numberAgents) {
+distances <<- findNeighbors(df = dfAgents, numberAgents = dfABM$numberAgents)
+dfAgents <<- chooseMate(reach = 100)
+dfAgents <<- compete(reach = 100)
+}
+
 
 compete <- function(dist.mat = distances, df = dfAgents, reach = 1000) {
   dist.mat[upper.tri(dist.mat, diag = TRUE) == TRUE] <- NA
