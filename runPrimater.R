@@ -11,9 +11,12 @@ devtools::install_github('kevinrosenfield/primater', force = T)
 detach('package:primater', unload = TRUE)
 library(primater); library(plotly); library(rethinking); library(tidyverse)
 
-setup(dimensions = 2, liveInGroup = F)
-go(reps = 1000, GIF = F, plot = T, contestPlot = F)
-plot(c(dfAgents$xCorOrigin, xCors), c(dfAgents$yCorOrigin, yCors), pch = 21,
+setup(dimensions = 2, liveInGroup = T)
+quartz()
+plot(NA, xlim = c(-10, 10), ylim = c(-10, 10), type = "n", xaxt = "n", yaxt = "n", xlab = "", ylab = "")
+go(reps = 100, GIF = F, plot = T, contestPlot = F, reach = 10)
+
+fig <- plot(c(dfAgents$xCorOrigin, xCors), c(dfAgents$yCorOrigin, yCors), pch = 21,
      cex = c(cexSizes,rep(.2, length(xCors))),
      col = c(rep("blue", dfABM$numberAgents), rep("red",  length(xCors))),
      bg = c(rep("green", dfABM$numberAgents), rep("green",  length(xCors))),
