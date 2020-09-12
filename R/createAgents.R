@@ -38,9 +38,11 @@ setupAgents <- function(df = dfABM) {
                                    rnorm(df$numberAgents, df$meanFemaleMetersPerHour, df$sdFemaleMetersPerHour),
                                     rnorm(df$numberAgents, df$meanMaleMetersPerHour, df$sdMaleMetersPerHour))
 
-  cexSizes <- list()
-  cexSizes <<- dfAgents$homeRangeRadius / (par("cin")[2]/par("pin")[1]) / (par("usr")[2] -
-                                                                            par("usr")[1]) / par("cex") / 0.1875
+  cexConstant <- ifelse(dfABM$groupLiving == T, 23, 1)
+
+  fig <<- plot(NA, xlim =  c(0 - dfABM$worldRadius, dfABM$worldRadius), ylim = c(0 - dfABM$worldRadius, dfABM$worldRadius))
+  cexSizes <<- (dfAgents$homeRangeRadius / (par("cin")[2] / par("pin")[1]) /
+                           (par("usr")[2] -par("usr")[1]) / par("cex") / 0.1875) * 1.1 * cexConstant
 
   print(paste("This ", df$dimensions, "-dimensional model world is ", round(df$worldSizeMetersDim,2), " m^",
                    df$dimensions,". Its ", length(dfAgents$Sex[dfAgents$Sex == "F"]), " female residents' home ranges are ",
@@ -51,4 +53,6 @@ setupAgents <- function(df = dfABM) {
 
   return(dfAgents)
 }
+
+
 
