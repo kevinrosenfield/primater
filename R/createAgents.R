@@ -38,7 +38,7 @@ setupAgents <- function(df = dfABM) {
                                    rnorm(df$numberAgents, df$meanFemaleMetersPerHour, df$sdFemaleMetersPerHour),
                                     rnorm(df$numberAgents, df$meanMaleMetersPerHour, df$sdMaleMetersPerHour))
 
-  try(rm(cexSizes))
+  cexSizes <- list()
   cexSizes <<- dfAgents$homeRangeRadius / (par("cin")[2]/par("pin")[1]) / (par("usr")[2] -
                                                                             par("usr")[1]) / par("cex") / 0.1875
 

@@ -5,14 +5,14 @@
 # challenge stores relevant information. Here, agentID and Mass for both competitions
 # challengers makes a lists of all contests to process; further code cleans up the format and removes duplicate contests
 
-interact <- function(df = dfAgents, numberAgents = dfABM$numberAgents) {
+interact <- function(df = dfAgents, numberAgents = dfABM$numberAgents, reach = reach) {
 distances <<- findNeighbors(df = dfAgents, numberAgents = dfABM$numberAgents)
-dfAgents <<- chooseMate(reach = 100)
-dfAgents <<- compete(reach = 100)
+dfAgents <<- chooseMate(reach = reach)
+dfAgents <<- compete(reach = reach)
 }
 
 
-compete <- function(dist.mat = distances, df = dfAgents, reach = 1000) {
+compete <- function(dist.mat = distances, df = dfAgents, reach = reach) {
   dist.mat[upper.tri(dist.mat, diag = TRUE) == TRUE] <- NA
   dist.mat[dist.mat > reach] <- NA
   for (a in 1:dfABM$numberAgents) {
@@ -34,7 +34,7 @@ compete <- function(dist.mat = distances, df = dfAgents, reach = 1000) {
 
 # sample from 0 with prob = 0 because when there is only 1 caller, sample is set tp 1:caller
 
-chooseMate <- function(dist.mat = distances, df = dfAgents, reach = 1000) {
+chooseMate <- function(dist.mat = distances, df = dfAgents, reach = reach) {
   dist.mat[dist.mat > reach | dist.mat == 0] <- NA
   for (a in 1:dfABM$numberAgents) {
     if (df$Sex[a] == "F") {
