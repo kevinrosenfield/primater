@@ -25,6 +25,7 @@ setupAgents <- function(df = dfABM) {
   dfAgents$Losses <- rep(0, df$numberAgents)
   dfAgents$winRatio <- 0
   dfAgents$Mates <- rep(0, dfABM$numberAgents)
+  dfAgents$chasing <- F
   dfAgents$Heading1 <- runif(df$numberAgents, 0, 360)
   dfAgents$Heading2 <- runif(df$numberAgents, 0, 360)
   dfAgents$homeRangeMetersDim <- ifelse(dfAgents$Sex == "F",
@@ -38,7 +39,8 @@ setupAgents <- function(df = dfABM) {
                                    rnorm(df$numberAgents, df$meanFemaleMetersPerHour, df$sdFemaleMetersPerHour),
                                     rnorm(df$numberAgents, df$meanMaleMetersPerHour, df$sdMaleMetersPerHour))
 
-  cexConstant <- ifelse(dfABM$groupLiving == T, 23, 1)
+  cexSizes <- list()
+  cexConstant <- ifelse(dfABM$groupLiving == T, 20.1, 1)
 
   fig <<- plot(NA, xlim =  c(0 - dfABM$worldRadius, dfABM$worldRadius), ylim = c(0 - dfABM$worldRadius, dfABM$worldRadius))
   cexSizes <<- (dfAgents$homeRangeRadius / (par("cin")[2] / par("pin")[1]) /

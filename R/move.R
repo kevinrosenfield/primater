@@ -5,9 +5,12 @@ move <- function(df = dfAgents){
   df$distFromHome <- lookHome(df = df)
   df <- setHeading(df = df, numberAgents = dfABM$numberAgents)
   df <- if (dfABM$dimensions == 2) { move2D(df) } else { move3D(df) }
-  xCors <<- append(xCors, dfAgents$xCor)
-  yCors <<- append(yCors, dfAgents$yCor)
-  zCors <<- append(zCors, dfAgents$zCor)
+  xCorsMale <<- append(xCors, dfAgents$xCor[dfAgents$Sex == "M"])
+  yCorsMale <<- append(yCors, dfAgents$yCor[dfAgents$Sex == "M"])
+  zCorsMale <<- append(zCors, dfAgents$zCor[dfAgents$Sex == "M"])
+  xCorsFemale <<- append(xCors, dfAgents$xCor[dfAgents$Sex == "F"])
+  yCorsFemale <<- append(yCors, dfAgents$yCor[dfAgents$Sex == "F"])
+  zCorsFemale <<- append(zCors, dfAgents$zCor[dfAgents$Sex == "F"])
   return(df)
 }
 
