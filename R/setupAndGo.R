@@ -35,8 +35,8 @@ go <- function(reps = reps, GIF = F, plot = F, contestPlot = F, reach = 100) {
     }
     if (plot == T) {
       omit <- length(xCors) - dfABM$numberAgents
-      png("fig.png")
-      plot(c(dfAgents$xCorOrigin, xCors[-c(1:omit)]),
+      #png("fig.png")
+      fig <- plot(c(dfAgents$xCorOrigin, xCors[-c(1:omit)]),
                   c(dfAgents$yCorOrigin, yCors[-c(1:omit)]),
                   pch = 21,
                   cex = c(cexSizes,rep(.2, length(xCors[-c(1:omit)]))),
@@ -45,8 +45,8 @@ go <- function(reps = reps, GIF = F, plot = F, contestPlot = F, reach = 100) {
                   bg = c(rep(rgb(0, 1, 0, alpha = 0.5), dfABM$numberAgents),
                          rep(rgb(0, 1, 0, alpha = 0.5),  length(xCors[-c(1:omit)]))),
                   xlim=c(0 - dfABM$worldRadius, dfABM$worldRadius), ylim=c(0 - dfABM$worldRadius, dfABM$worldRadius))
-      fig <- readPNG("fig.png")
-      rasterImage(fig, -10, -10, 10, 10)
+      #fig <- readPNG("fig.png")
+      #rasterImage(fig, -10, -10, 10, 10)
     }
     if (GIF == T) {
       png(file = paste("fig", i, ".png", sep = ""))
