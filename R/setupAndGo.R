@@ -36,7 +36,7 @@ go <- function(reps = reps, GIF = F, plot = F, contestPlot = F, matingPlot = F, 
       mPlot <- plot(dfAgents$Mates[dfAgents$Sex == "M"] ~ dfAgents$Attractiveness[dfAgents$Sex == "M"])
       abline(lm(dfAgents$Mates[dfAgents$Sex == "M"] ~ dfAgents$Attractiveness[dfAgents$Sex == "M"]))
     }
-    agentConstant <- ifelse(dfABM$groupLiving == T, 5, .1)
+    agentConstant <- ifelse(dfABM$groupLiving == T, 5, .2)
     if (plot == T) {
       omitMale <- length(xCorsMale) - length(dfABM$numberAgents[dfAgents$Sex == "M"])
       omitFemale <- length(xCorsFemale) - length(dfABM$numberAgents[dfAgents$Sex == "F"])
