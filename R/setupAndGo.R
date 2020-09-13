@@ -10,7 +10,7 @@ setup <- function(dimensions = 2, numberAgents =  sample(2:100, 1), worldDiamete
   zCors <<- list()
 }
 
-go <- function(reps = reps, GIF = F, plot = F, contestPlot = F, matingPlot = F, reach = 10, sight = 100, turgidity = 20) {
+go <- function(reps = reps, GIF = F, plot = F, contestPlot = F, matingPlot = F, reach = 10, sight = 100, sinuosity = 20) {
   if (GIF == T) {
     wd <- getwd()
     setwd("/Users/kevinrosenfield/Box/PSU/Dissertation/New dissertation/Figures")
@@ -24,7 +24,7 @@ go <- function(reps = reps, GIF = F, plot = F, contestPlot = F, matingPlot = F, 
   }
   for (i in 1:reps) {
     distances <<- findNeighbors()
-    dfAgents <<- move(turgidity = turgidity)
+    dfAgents <<- move(sinuosity = sinuosity)
     dfAgents <<- seekMate(sight = sight)
     dfAgents <<- interact(reach = reach)
     if (contestPlot == T) {
@@ -36,7 +36,7 @@ go <- function(reps = reps, GIF = F, plot = F, contestPlot = F, matingPlot = F, 
       mPlot <- plot(dfAgents$Mates[dfAgents$Sex == "M"] ~ dfAgents$Attractiveness[dfAgents$Sex == "M"])
       abline(lm(dfAgents$Mates[dfAgents$Sex == "M"] ~ dfAgents$Attractiveness[dfAgents$Sex == "M"]))
     }
-    agentConstant <- ifelse(dfABM$groupLiving == T, 5, .2)
+    agentConstant <- ifelse(dfABM$groupLiving == T, 5, .1)
     if (plot == T) {
       omitMale <- length(xCorsMale) - length(dfABM$numberAgents[dfAgents$Sex == "M"])
       omitFemale <- length(xCorsFemale) - length(dfABM$numberAgents[dfAgents$Sex == "F"])

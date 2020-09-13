@@ -1,9 +1,9 @@
 # direct agents to move according to the XY direction they are facing (heading1) and their hourly rate of movement
 # agents' age increases by 1 hour (1/365/24) during every time step
 
-move <- function(df = dfAgents, turgidity = turgidity){
+move <- function(df = dfAgents, sinuosity = sinuosity){
   df$distFromHome <- lookHome(df = df)
-  df <- setHeading(df = df, numberAgents = dfABM$numberAgents, turgidity = turgidity)
+  df <- setHeading(df = df, numberAgents = dfABM$numberAgents, sinuosity = sinuosity)
   df <- if (dfABM$dimensions == 2) { move2D(df) } else { move3D(df) }
   xCorsMale <<- append(xCors, dfAgents$xCor[dfAgents$Sex == "M"])
   yCorsMale <<- append(yCors, dfAgents$yCor[dfAgents$Sex == "M"])
