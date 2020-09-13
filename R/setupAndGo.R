@@ -10,13 +10,13 @@ setup <- function(dimensions = 2, numberAgents =  sample(2:100, 1), worldDiamete
   zCors <<- list()
 }
 
-go <- function(reps = reps, GIF = F, plot = F, contestPlot = F, matingPlot = F, reach = 10, sight = 100) {
+go <- function(reps = reps, GIF = F, plot = F, contestPlot = F, matingPlot = F, reach = 10, sight = 100, turgidity = 20) {
   if (GIF == T) {
     wd <- getwd()
     setwd("/Users/kevinrosenfield/Box/PSU/Dissertation/New dissertation/Figures")
   }
   if (contestPlot == T | matingPlot == T) {
-    quartz()
+    quartz(height = 5, width = 5)
   }
   if (plot == T ) {
     quartzPoint <- ifelse(dfABM$groupLiving == T, 1, 18)
@@ -24,7 +24,7 @@ go <- function(reps = reps, GIF = F, plot = F, contestPlot = F, matingPlot = F, 
   }
   for (i in 1:reps) {
     distances <<- findNeighbors()
-    dfAgents <<- move()
+    dfAgents <<- move(turgidity = turgidity)
     dfAgents <<- seekMate(sight = sight)
     dfAgents <<- interact(reach = reach)
     if (contestPlot == T) {
