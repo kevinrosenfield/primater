@@ -1,7 +1,7 @@
 
 setup <- function(dimensions = 2, numberAgents =  sample(2:100, 1), worldDiameter = runif(1, 25, 1000),
-                  liveInGroup = T, maleRangeProp = 0.25, dayRangeProp = 0.1) {
-  dfABM <<- setupABM(dimensions, numberAgents, worldDiameter, liveInGroup, maleRangeProp, dayRangeProp)
+                  liveInGroup = T, maleRangeProp = 0.25, dayRangeProp = 0.1, refractory = 1/365) {
+  dfABM <<- setupABM(dimensions, numberAgents, worldDiameter, liveInGroup, maleRangeProp, dayRangeProp, refractory)
   dfAgents <<- setupAgents(df = dfABM)
 
   reps <<-  10

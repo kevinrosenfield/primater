@@ -25,6 +25,7 @@ setupAgents <- function(df = dfABM) {
   dfAgents$Losses <- rep(0, df$numberAgents)
   dfAgents$winRatio <- 0
   dfAgents$Mates <- rep(0, dfABM$numberAgents)
+  dfAgents$sinceLastMate <- 1000000
   dfAgents$chasing <- F
   dfAgents$Heading1 <- runif(df$numberAgents, 0, 360)
   dfAgents$Heading2 <- runif(df$numberAgents, 0, 360)

@@ -53,6 +53,7 @@ chooseMate <- function(dist.mat = distances, df = dfAgents, reach = reach) {
       rejects <- callers[-match(mate, callers)]
       df$Mates[a] <- df$Mates[a] + 1
       df$Mates[mate] <- df$Mates[mate] + 1
+      df$sinceLastMate[mate] <- 0
     }
   }
   return(df)

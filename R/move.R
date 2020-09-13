@@ -11,6 +11,8 @@ move <- function(df = dfAgents, turgidity = turgidity){
   xCorsFemale <<- append(xCors, dfAgents$xCor[dfAgents$Sex == "F"])
   yCorsFemale <<- append(yCors, dfAgents$yCor[dfAgents$Sex == "F"])
   zCorsFemale <<- append(zCors, dfAgents$zCor[dfAgents$Sex == "F"])
+  df$Age = df$Age + 0.0001141553
+  df$sinceLastMate <- df$sinceLastMate + 0.0001141553
   return(df)
 }
 
@@ -22,7 +24,6 @@ lookHome <- function(df = dfAgents){
 move2D <- function(df = dfAgents) {
   df$xCor = df$xCor + (df$metersPerHour * cos((df$Heading1) * (pi / 180)))
   df$yCor = df$yCor + (df$metersPerHour * sin((df$Heading1) * (pi / 180)))
-  df$Age = df$Age + 0.0001141553
   return(df)
 }
 
@@ -32,7 +33,6 @@ move3D <- function(df = dfAgents) {
   df$xCor = df$xCor + (df$metersPerHour * cos((df$Heading2) * sin(df$Heading1) * (pi / 180)))
   df$yCor = df$yCor + (df$metersPerHour * sin((df$Heading2) * (pi / 180)))
   df$zCor = df$zCor + (df$metersPerHour * cos((df$Heading2) * cos(df$Heading1) * (pi / 180)))
-  df$Age = df$Age + 0.0001141553
   return(df)
 }
 

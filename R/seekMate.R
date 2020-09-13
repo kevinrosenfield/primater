@@ -8,7 +8,9 @@ seekMate <- function(dist.mat = distances, df = dfAgents, sight = sight) {
     }
   }
   for (a in 1:dfABM$numberAgents) {
-    if (!all(is.na(dist.mat[a,]))) {
+    if (!all(is.na(dist.mat[a,])) &
+        sample(1:2, 1, prob = c(df$sinceLastMate[a] / dfABM$refractory,
+                              (abs(dfABM$refractory - df$sinceLastMate[a] / dfABM$refractory)))) == 1) {
       potentialMate <- which.min(dist.mat[a,])[[1]]
       xCorGoal <- df$xCor[potentialMate]
       yCorGoal <- df$yCor[potentialMate]
