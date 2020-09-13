@@ -32,12 +32,8 @@ setupAgents <- function(df = dfABM) {
                                         abs(rnorm(df$numberAgents, df$meanFemaleRangeMetersDim, df$sdFemaleRangeMetersDim)),
                                         abs(rnorm(df$numberAgents, df$meanMaleRangeMetersDim, df$sdMaleRangeMetersDim)))
   dfAgents$homeRangeRadius <- sqrt(dfAgents$homeRangeMetersDim/pi)
-  dfAgents$dayRangeMeters <- ifelse(dfAgents$Sex == "F",
-                                    rnorm(df$numberAgents, df$meanFemaleDayRange, df$sdFemaleDayRange),
-                                   rnorm(df$numberAgents, df$meanMaleDayRange, df$sdMaleDayRange))
-  dfAgents$metersPerHour <- ifelse(dfAgents$Sex == "F",
-                                   rnorm(df$numberAgents, df$meanFemaleMetersPerHour, df$sdFemaleMetersPerHour),
-                                    rnorm(df$numberAgents, df$meanMaleMetersPerHour, df$sdMaleMetersPerHour))
+  dfAgents$dayRangeMeters <- dfAgents$homeRangeRadius * 2 * df$dayRangeProp
+  dfAgents$metersPerHour <- dfAgents$dayRangeMeters * df$dailyActivityProp
 
   cexSizes <- list()
   cexConstant <- ifelse(dfABM$groupLiving == T, 20.1, 1)

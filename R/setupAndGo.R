@@ -1,6 +1,7 @@
 
-setup <- function(dimensions = 2, numberAgents =  sample(2:100, 1), worldDiameter = runif(1, 25, 1000), liveInGroup = T) {
-  dfABM <<- setupABM(dimensions, numberAgents, worldDiameter, liveInGroup)
+setup <- function(dimensions = 2, numberAgents =  sample(2:100, 1), worldDiameter = runif(1, 25, 1000),
+                  liveInGroup = T, maleRangeProp = 0.25, dayRangeProp = 0.1) {
+  dfABM <<- setupABM(dimensions, numberAgents, worldDiameter, liveInGroup, maleRangeProp, dayRangeProp)
   dfAgents <<- setupAgents(df = dfABM)
 
   reps <<-  10
@@ -28,9 +29,12 @@ go <- function(reps = reps, GIF = F, plot = F, contestPlot = F, matingPlot = F, 
     dfAgents <<- interact(reach = reach)
     if (contestPlot == T) {
       cPlot <- plot(dfAgents$winRatio[dfAgents$Sex == "M"] ~ dfAgents$Mass[dfAgents$Sex == "M"])
+      abline(lm(dfAgents$winRatio[dfAgents$Sex == "M"] ~ dfAgents$Mass[dfAgents$Sex == "M"]))
+
     }
     if (matingPlot == T) {
       mPlot <- plot(dfAgents$Mates[dfAgents$Sex == "M"] ~ dfAgents$Attractiveness[dfAgents$Sex == "M"])
+      abline(lm(dfAgents$Mates[dfAgents$Sex == "M"] ~ dfAgents$Attractiveness[dfAgents$Sex == "M"]))
     }
     agentConstant <- ifelse(dfABM$groupLiving == T, 5, .1)
     if (plot == T) {
@@ -42,8 +46,8 @@ go <- function(reps = reps, GIF = F, plot = F, contestPlot = F, matingPlot = F, 
                   cex = c(cexSizes,
                           rep(agentConstant, length(xCorsMale[-c(1:omitMale)])),
                           rep(agentConstant, length(xCorsFemale[-c(1:omitFemale)]))),
-                  col = c(rep(rgb(0, 0, 1, alpha = 0.5), dfABM$numberAgents),
-                          rep(rgb(0, 1, 0),  length(xCorsMale[-c(1:omitMale)])),
+                  col = c(rep(rgb(0, 1, 0, alpha = 0.5), dfABM$numberAgents),
+                          rep(rgb(0, 0, 1),  length(xCorsMale[-c(1:omitMale)])),
                           rep(rgb(1, 0, 0),  length(xCorsFemale[-c(1:omitFemale)]))),
                   bg = c(rep(rgb(0, 1, 0, alpha = 0.5), dfABM$numberAgents),
                          rep(rgb(0, 1, 0),  length(xCorsMale[-c(1:omitMale)])),

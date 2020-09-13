@@ -26,6 +26,9 @@ compete <- function(dist.mat = distances, df = dfAgents, reach = reach) {
       loser <- ifelse(winner == a, opponent, a)
       df$Wins[winner] <- df$Wins[winner] + 1
       df$Losses[loser] <- df$Losses[loser] + 1
+      if (df$chasing[loser] == T) {
+        df$chasing[loser] <- F
+        df$Heading1[loser] <- df$Heading1[loser] - 180}
     }
   }
   df$winRatio <- df$Wins / (df$Wins + df$Losses)

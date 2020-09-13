@@ -12,9 +12,12 @@ seekMate <- function(dist.mat = distances, df = dfAgents, sight = sight) {
       potentialMate <- which.min(dist.mat[a,])[[1]]
       xCorGoal <- df$xCor[potentialMate]
       yCorGoal <- df$yCor[potentialMate]
-      angle <- complex(real = xCorGoal - df$xCor[a], imaginary = yCorGoal - df$yCor[a])
+      zCorGoal <- df$yCor[potentialMate]
+      angle <- complex(real = xCorGoal - df$xCor[a], imaginary = yCorGoal - df$yCor[a]) # need to adapt this to 3D
       df$Heading1[a] <- Arg(angle) / base::pi * 180
       df$chasing[a] <- T
+    } else {
+      df$chasing[a] <- F
     }
   }
   return(df)
