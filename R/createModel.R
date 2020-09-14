@@ -1,4 +1,4 @@
-setupABM <- function(dimensions, numberAgents, worldDiameter, liveInGroup, maleRangeProp, dayRangeProp, refractory) {
+setupABM <- function(dimensions, numberAgents, worldDiameter, liveInGroup, maleRangeProp, dayRangeProp, refractory, fleeTime) {
   model <-  list(
     "numberAgents" = numberAgents,
     "Territorial" = sample(c(FALSE, TRUE), 1),
@@ -7,7 +7,8 @@ setupABM <- function(dimensions, numberAgents, worldDiameter, liveInGroup, maleR
     "dimensions" = dimensions,
     "dailyActivityProp" = abs(rnorm(1, 0.12, 0.025)),
     "dayRangeProp" = dayRangeProp,
-    "refractory" = refractory)
+    "refractory" = refractory,
+    "fleeTime" = fleeTime)
   model <- c(
     model,
     "worldRadius" = model$worldDiameterMeters / 2,

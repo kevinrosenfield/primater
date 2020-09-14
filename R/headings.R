@@ -9,7 +9,7 @@ setHeading <- function(df = dfAgents, numberAgents = dfABM$numberAgents, sinuosi
 
 setHeading2D <- function(df = dfAgents, numberAgents = dfABM$numberAgents, sinuosity = sinuosity) {
   df$Heading1 <- ifelse(df$distFromHome < df$homeRangeRadius - df$metersPerHour,
-                        ifelse(df$chasing == T, df$Heading1, # we need a faceHome() function
+                        ifelse(df$chasing == T, df$Heading1,
                                df$Heading1 + rnorm(numberAgents, 0, sinuosity)),
                         Arg(complex(real = df$xCorOrigin - df$xCor, imaginary = df$yCorOrigin - df$yCor)) /base::pi * 180)
   df$Heading1 <- ifelse(df$Heading1 >= 360 | df$Heading1 < 0, abs(abs(df$Heading1) - 360), df$Heading1)
