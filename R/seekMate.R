@@ -9,8 +9,8 @@ seekMate <- function(dist.mat = distances, df = dfAgents, sight = sight) {
   }
   for (a in 1:dfABM$numberAgents) {
 
-    if (dfAgents$chasing[a] == F & !all(is.na(dist.mat[a,])) &
-        sample(1:2, 1, prob = c(1 - dfAgents$fleeTimeLeft[a] / (dfABM$refractory * 24),
+    if (dfAgents$chasing[a] == F & dfAgents$fleeTimeLeft[a] >= 0 & !all(is.na(dist.mat[a,])) &
+        sample(1:2, 1, prob = c(1 / (dfABM$refractory * 24),
                                 (abs(dfABM$refractory - (1 / (dfABM$refractory * 24)))))) == 1) {
       df$potentialMate[a] <- which.min(dist.mat[a,])[[1]]
       df$chasing[a] <- T

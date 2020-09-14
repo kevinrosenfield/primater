@@ -26,7 +26,7 @@ compete <- function(dist.mat = distances, df = dfAgents, reach = reach) {
       loser <- ifelse(winner == a, opponent, a)
       df$Wins[winner] <- df$Wins[winner] + 1
       df$Losses[loser] <- df$Losses[loser] + 1
-      df$fleeTime[loser] <- 1
+      df$fleeTimeLeft[loser] <- 1
       if (df$chasing[loser] == T) {
         df$chasing[loser] <- F
         df$Heading1[loser] <- df$Heading1[loser] - 180}
@@ -45,6 +45,7 @@ chooseMate <- function(dist.mat = distances, df = dfAgents, reach = reach) {
       dist.mat[,a] <- NA
     } else {
       dist.mat[a,] <- NA
+      if (df$fleeTimeLeft[a] >= 0) { dist.mat[,a] <- NA }
     }
   }
   for (a in 1:dfABM$numberAgents) {

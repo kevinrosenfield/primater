@@ -26,7 +26,7 @@ go <- function(reps = reps, GIF = F, plot = F, contestPlot = F, matingPlot = F, 
     distances <<- findNeighbors()
     dfAgents <<- move(sinuosity = sinuosity)
     dfAgents <<- seekMate(sight = sight)
-    dfAgentfromw<<- interact(reach = reach)
+    dfAgents <<- interact(reach = reach)
     if (contestPlot == T) {
       cPlot <- plot(dfAgents$winRatio[dfAgents$Sex == "M"] ~ dfAgents$Mass[dfAgents$Sex == "M"])
       abline(lm(dfAgents$winRatio[dfAgents$Sex == "M"] ~ dfAgents$Mass[dfAgents$Sex == "M"]))
@@ -39,8 +39,6 @@ go <- function(reps = reps, GIF = F, plot = F, contestPlot = F, matingPlot = F, 
     palette(c("red", "blue"))
     agentConstant <- ifelse(dfABM$groupLiving == T, 5, .5)
     if (plot == T) {
-      omitMale <- length(xCorsMale) - length(dfAgents$agentID[dfAgents$Sex == "M"])
-      omitFemale <- length(xCorsFemale) - length(dfAgents$agentID[dfAgents$Sex == "F"])
       fig <- plot(c(dfAgents$xCorOrigin, dfAgents$xCor),
                   c(dfAgents$yCorOrigin, dfAgents$yCor),
                   pch = 21,
