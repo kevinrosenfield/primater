@@ -56,6 +56,3 @@ setupAgents <- function(df = dfABM) {
 
   return(dfAgents)
 }
-
-
-
