@@ -42,6 +42,7 @@ setupAgents <- function(df = dfABM) {
   cexConstant <- ifelse(dfABM$groupLiving == T, 20.1, 1)
 
   fig <<- plot(NA, xlim =  c(0 - dfABM$worldRadius, dfABM$worldRadius), ylim = c(0 - dfABM$worldRadius, dfABM$worldRadius))
+  rm(fig, pos=".GlobalEnv")
   cexSizes <<- (dfAgents$homeRangeRadius / (par("cin")[2] / par("pin")[1]) /
                            (par("usr")[2] -par("usr")[1]) / par("cex") / 0.1875) * 1.1 * cexConstant
 

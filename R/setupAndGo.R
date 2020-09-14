@@ -3,14 +3,9 @@ setup <- function(dimensions = 2, numberAgents = sample(2:100, 1), worldDiameter
                   liveInGroup = T, maleRangeProp = 0.25, dayRangeProp = 0.1, refractory = 1/365, fleeTime = 1) {
   dfABM <<- setupABM(dimensions, numberAgents, worldDiameter, liveInGroup, maleRangeProp, dayRangeProp, refractory, fleeTime)
   dfAgents <<- setupAgents(df = dfABM)
-
-  reps <<-  10
-  xCors <<- list()
-  yCors <<- list()
-  zCors <<- list()
 }
 
-go <- function(reps = reps, GIF = F, plot = F, contestPlot = F, matingPlot = F, reach = 10, sight = 100, sinuosity = 20) {
+go <- function(reps = 10, GIF = F, plot = F, contestPlot = F, matingPlot = F, reach = 10, sight = 100, sinuosity = 20) {
   if (GIF == T) {
     wd <- getwd()
     setwd("/Users/kevinrosenfield/Box/PSU/Dissertation/New dissertation/Figures")

@@ -15,6 +15,8 @@ dfAgents <<- compete(reach = reach)
 compete <- function(dist.mat = distances, df = dfAgents, reach = reach) {
   dist.mat[upper.tri(dist.mat, diag = TRUE) == TRUE] <- NA
   dist.mat[dist.mat > reach] <- NA
+  xCorsCompete <- list()
+  yCorsCompete <- list()
   for (a in 1:dfABM$numberAgents) {
     if (df$Sex[a] == "F") {
       dist.mat[a,] <- NA
@@ -29,8 +31,13 @@ compete <- function(dist.mat = distances, df = dfAgents, reach = reach) {
       df$fleeTimeLeft[loser] <- 1
       if (df$chasing[loser] == T) {
         df$chasing[loser] <- F
-        df$Heading1[loser] <- df$Heading1[loser] - 180}
+        df$Heading1[loser] <- df$Heading1[loser] - 180
+        }
+      xCorsCompete <- append(xCorsCompete, df$xCor[a])
+      yCorsCompete <- append(yCorsCompete, df$yCor[a])
     }
+    xCorsCompete <<- xCorsCompete
+    xCorsCompete <<- yCorsCompete
   }
   df$winRatio <- df$Wins / (df$Wins + df$Losses)
   return(df)
