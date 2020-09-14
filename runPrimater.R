@@ -14,10 +14,10 @@ library(primater); library(plotly); library(rethinking); library(tidyverse); lib
 betas <- list()
 fleeTimes <- seq(0, 0.02, .001)
 for (f in fleeTimes) {
-  setup(dimensions = 2, liveInGroup = T, numberAgents = 50, maleRangeProp = 2,
+  setup(dimensions = 2, liveInGroup = F, numberAgents = 5, maleRangeProp = 2,
         dayRangeProp = 0.1, worldDiameter = 70, refractory = .1, fleeTime = 0)
 
-  go(reps = 300, GIF = F, plot = T, contestPlot = F, matingPlot = F, reach = 10, sight = 75, sinuosity = 25)
+  go(reps = 1, GIF = F, plot = T, contestPlot = F, matingPlot = F, reach = 10, sight = 75, sinuosity = 0)
 
   betas <- append(betas, summary(lm(dfAgents$Mates[dfAgents$Sex == "M"] ~
                                       dfAgents$Mass[dfAgents$Sex == "M"]))[4]$coefficients[2])
