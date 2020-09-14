@@ -18,7 +18,7 @@ compete <- function(dist.mat = distances, df = dfAgents, reach = reach) {
   xCorsCompete <- list()
   yCorsCompete <- list()
   for (a in 1:dfABM$numberAgents) {
-    if (df$Sex[a] == "F") {
+    if (df$Sex[a] == "F" | df$fleeTimeLeft[a] >= 0) {
       dist.mat[a,] <- NA
       dist.mat[,a] <- NA
     }
@@ -35,6 +35,8 @@ compete <- function(dist.mat = distances, df = dfAgents, reach = reach) {
         }
       xCorsCompete <- append(xCorsCompete, df$xCor[a])
       yCorsCompete <- append(yCorsCompete, df$yCor[a])
+      dist.mat[c(winner,loser),] <- NA
+      dist.mat[,c(winner,loser)] <- NA
     }
     xCorsCompete <<- xCorsCompete
     yCorsCompete <<- yCorsCompete
