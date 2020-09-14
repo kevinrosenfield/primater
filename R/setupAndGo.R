@@ -1,5 +1,5 @@
 
-setup <- function(dimensions = 2, numberAgents =  sample(2:100, 1), worldDiameter = runif(1, 25, 1000),
+setup <- function(dimensions = 2, numberAgents = sample(2:100, 1), worldDiameter = runif(1, 25, 1000),
                   liveInGroup = T, maleRangeProp = 0.25, dayRangeProp = 0.1, refractory = 1/365) {
   dfABM <<- setupABM(dimensions, numberAgents, worldDiameter, liveInGroup, maleRangeProp, dayRangeProp, refractory)
   dfAgents <<- setupAgents(df = dfABM)
@@ -38,8 +38,8 @@ go <- function(reps = reps, GIF = F, plot = F, contestPlot = F, matingPlot = F, 
     }
     agentConstant <- ifelse(dfABM$groupLiving == T, 5, .1)
     if (plot == T) {
-      omitMale <- length(xCorsMale) - length(dfABM$numberAgents[dfAgents$Sex == "M"])
-      omitFemale <- length(xCorsFemale) - length(dfABM$numberAgents[dfAgents$Sex == "F"])
+      omitMale <- length(xCorsMale) - length(dfAgents$agentID[dfAgents$Sex == "M"])
+      omitFemale <- length(xCorsFemale) - length(dfAgents$agentID[dfAgents$Sex == "F"])
       fig <- plot(c(dfAgents$xCorOrigin, xCorsMale[-c(1:omitMale)], xCorsFemale[-c(1:omitFemale)]),
                   c(dfAgents$yCorOrigin, yCorsMale[-c(1:omitMale)], yCorsFemale[-c(1:omitFemale)]),
                   pch = 21,
@@ -65,3 +65,8 @@ go <- function(reps = reps, GIF = F, plot = F, contestPlot = F, matingPlot = F, 
   }
 }
 
+clearModel <- function() {
+  suppressWarnings({rm(dfAgents, pos = ".GlobalEnv")})
+  suppressWarnings({rm(dfABM, pos = ".GlobalEnv")})
+  if (length(dev.list()) > 0) {for (d in 1:length(dev.list()) - 1) { dev.off() } }
+}
