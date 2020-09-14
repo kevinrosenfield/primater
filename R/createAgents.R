@@ -40,7 +40,8 @@ setupAgents <- function(df = dfABM) {
 
   cexSizes <- list()
   cexConstant <- ifelse(dfABM$groupLiving == T, 20.1, 0.8)
-  cexConstant <- ifelse((Sys.info()[['sysname']] == 'Windows') == T, cexConstant * 1.5, cexConstant)
+  cexConstant <- ifelse((Sys.info()[['sysname']] == 'Windows') == T,
+                        ifelse(dfABM$groupLiving == T, cexConstant * 1.8, cexConstant * 1.5), cexConstant)
 
   fig <<- plot(NA, xlim =  c(0 - dfABM$worldRadius, dfABM$worldRadius), ylim = c(0 - dfABM$worldRadius, dfABM$worldRadius))
   #rm(fig, pos=".GlobalEnv")
