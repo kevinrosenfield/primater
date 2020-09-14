@@ -51,7 +51,8 @@ go <- function(reps = reps, GIF = F, plot = F, contestPlot = F, matingPlot = F, 
                   bg = c(rep(rgb(0, 1, 0, alpha = 0.5), dfABM$numberAgents),
                          dfAgents$Sex),
                   xlim=c(0 - dfABM$worldRadius, dfABM$worldRadius), ylim=c(0 - dfABM$worldRadius, dfABM$worldRadius))
-      legend(1, 95, legend=c("Female", "Male"), col=c("red", "blue"), lty=1:1, cex=0.2)
+      legend("topright", legend=c("Female", "Male"),
+             col=c("red", "blue"), lty=1:1, cex=15)
     }
     if (GIF == T) {
       png(file = paste("fig", i, ".png", sep = ""))

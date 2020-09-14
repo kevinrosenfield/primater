@@ -5,12 +5,6 @@ move <- function(df = dfAgents, sinuosity = sinuosity){
   df$distFromHome <- lookHome(df = df)
   df <- setHeading(df = df, numberAgents = dfABM$numberAgents, sinuosity = sinuosity)
   df <- if (dfABM$dimensions == 2) { move2D(df) } else { move3D(df) }
-  xCorsMale <<- append(xCors, dfAgents$xCor[dfAgents$Sex == "M"])
-  yCorsMale <<- append(yCors, dfAgents$yCor[dfAgents$Sex == "M"])
-  zCorsMale <<- append(zCors, dfAgents$zCor[dfAgents$Sex == "M"])
-  xCorsFemale <<- append(xCors, dfAgents$xCor[dfAgents$Sex == "F"])
-  yCorsFemale <<- append(yCors, dfAgents$yCor[dfAgents$Sex == "F"])
-  zCorsFemale <<- append(zCors, dfAgents$zCor[dfAgents$Sex == "F"])
   df$Age = df$Age + 0.0001141553
   df$sinceLastMate <- df$sinceLastMate + 0.0001141553
   return(df)
