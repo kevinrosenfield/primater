@@ -39,7 +39,7 @@ setupAgents <- function(df = dfABM) {
   dfAgents$metersPerHour <- dfAgents$dayRangeMeters * df$dailyActivityProp
 
   cexSizes <- list()
-  cexConstant <- ifelse(dfABM$groupLiving == T, 20.1, 1)
+  cexConstant <- ifelse(dfABM$groupLiving == T, 20.1, 0.8)
 
   fig <<- plot(NA, xlim =  c(0 - dfABM$worldRadius, dfABM$worldRadius), ylim = c(0 - dfABM$worldRadius, dfABM$worldRadius))
   #rm(fig, pos=".GlobalEnv")

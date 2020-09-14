@@ -11,11 +11,19 @@ go <- function(reps = 10, GIF = F, plot = F, contestPlot = F, matingPlot = F, re
     setwd("/Users/kevinrosenfield/Box/PSU/Dissertation/New dissertation/Figures")
   }
   if (contestPlot == T | matingPlot == T) {
-    quartz(height = 5, width = 5)
+    if (Sys.info()['sysname'] == 'Windows') {
+      x11(pointsize = quartzPoint)
+    } else {
+      quartz(height = 5, width = 5)
+    }
   }
   if (plot == T ) {
-    quartzPoint <- ifelse(dfABM$groupLiving == T, 1, 18)
-    quartz(pointsize = quartzPoint)
+    quartzPoint <- ifelse(dfABM$groupLiving == T, 1, 13)
+    if (Sys.info()['sysname'] == 'Windows') {
+      x11(pointsize = quartzPoint)
+    } else {
+      quartz(pointsize = quartzPoint)
+    }
   }
   for (i in 1:reps) {
     distances <<- findNeighbors()
@@ -33,6 +41,8 @@ go <- function(reps = 10, GIF = F, plot = F, contestPlot = F, matingPlot = F, re
     }
     palette(c("red", "blue"))
     agentConstant <- ifelse(dfABM$groupLiving == T, 10, .5)
+    legendConstant <- ifelse(dfABM$groupLiving == T, 15, 1)
+    axisConstant <- ifelse(dfABM$groupLiving == T, 1, 1.5)
     shapes = c(21, 21, 1)
     shapes <- shapes[sign(dfAgents$fleeTimeLeft) + 2]
     if (plot == T) {
@@ -45,9 +55,9 @@ go <- function(reps = 10, GIF = F, plot = F, contestPlot = F, matingPlot = F, re
                           dfAgents$Sex, rep("black", length(xCorsCompete))),
                   bg = c(rep(rgb(0, 1, 0, alpha = 0.5), dfABM$numberAgents),
                          dfAgents$Sex, rep(NA, length(xCorsCompete))),
-                  xlim=c(0 - dfABM$worldRadius, dfABM$worldRadius), ylim=c(0 - dfABM$worldRadius, dfABM$worldRadius))
-      legend("topright", legend=c("Female", "Male"),
-             col=c("red", "blue"), lty=1:1, cex=15)
+                  xlim=c(0 - (dfABM$worldRadius * axisConstant), (dfABM$worldRadius * axisConstant)),
+                  ylim=c(0 - (dfABM$worldRadius * axisConstant), (dfABM$worldRadius * axisConstant)))
+      legend("topright", legend=c("Female", "Male"), col=c("red", "blue"), lty=1:1, cex=1 * legendConstant)
     }
     if (GIF == T) {
       png(file = paste("fig", i, ".png", sep = ""))
