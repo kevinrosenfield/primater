@@ -14,7 +14,7 @@ go <- function(reps = 10, GIF = F, plot = F, contestPlot = F, matingPlot = F, re
     quartz(height = 5, width = 5)
   }
   if (plot == T ) {
-    quartzPoint <- ifelse(dfABM$groupLiving == T, 1.15, 18)
+    quartzPoint <- ifelse(dfABM$groupLiving == T, 1.35, 18)
     quartz(pointsize = quartzPoint)
   }
   for (i in 1:reps) {

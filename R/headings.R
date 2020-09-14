@@ -16,7 +16,7 @@ setHeading2D <- function(df = dfAgents, numberAgents = dfABM$numberAgents, sinuo
   return(df)
 }
 
-setHeading3D <- function(df = dfAgents, numberAgents = dfABM$numberAgents) {
+setHeading3D <- function(df = dfAgents, numberAgents = dfABM$numberAgents, sinuosity = sinuosity) {
 
   df$Heading1 <- ifelse(df$distFromHome < df$homeRangeRadius - df$metersPerHour,
                         ifelse(df$chasing == T, df$Heading1,
