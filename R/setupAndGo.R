@@ -34,15 +34,15 @@ go <- function(reps = 10, GIF = F, plot = F, contestPlot = F, matingPlot = F, re
     palette(c("red", "blue"))
     agentConstant <- ifelse(dfABM$groupLiving == T, 5, .5)
     if (plot == T) {
-      fig <- plot(c(dfAgents$xCorOrigin, dfAgents$xCor),
-                  c(dfAgents$yCorOrigin, dfAgents$yCor),
-                  pch = 21,
+      fig <- plot(c(dfAgents$xCorOrigin, dfAgents$xCor, xCorsCompete),
+                  c(dfAgents$yCorOrigin, dfAgents$yCor, yCorsCompete),
+                  pch = c(rep(21, length(cexSizes) + dfABM$numberAgents), rep(4, length(xCorsCompete))),
                   cex = c(cexSizes,
-                          rep(agentConstant, dfABM$numberAgents)),
+                          rep(agentConstant, dfABM$numberAgents), rep(agentConstant * 2, length(xCorsCompete))),
                   col = c(rep(rgb(0, 1, 0, alpha = 0.5), dfABM$numberAgents),
-                          dfAgents$Sex),
+                          dfAgents$Sex, rep("black", length(xCorsCompete))),
                   bg = c(rep(rgb(0, 1, 0, alpha = 0.5), dfABM$numberAgents),
-                         dfAgents$Sex),
+                         dfAgents$Sex, rep(NA, length(xCorsCompete))),
                   xlim=c(0 - dfABM$worldRadius, dfABM$worldRadius), ylim=c(0 - dfABM$worldRadius, dfABM$worldRadius))
       legend("topright", legend=c("Female", "Male"),
              col=c("red", "blue"), lty=1:1, cex=15)

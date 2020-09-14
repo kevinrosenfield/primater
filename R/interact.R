@@ -37,7 +37,7 @@ compete <- function(dist.mat = distances, df = dfAgents, reach = reach) {
       yCorsCompete <- append(yCorsCompete, df$yCor[a])
     }
     xCorsCompete <<- xCorsCompete
-    xCorsCompete <<- yCorsCompete
+    yCorsCompete <<- yCorsCompete
   }
   df$winRatio <- df$Wins / (df$Wins + df$Losses)
   return(df)
