@@ -11,7 +11,7 @@ go <- function(reps = 10, GIF = F, plot = F, contestPlot = F, matingPlot = F, re
     setwd("/Users/kevinrosenfield/Box/PSU/Dissertation/New dissertation/Figures")
   }
   if (contestPlot == T | matingPlot == T) {
-    if (Sys.info()['sysname'] == 'Windows') {
+    if (Sys.info()[['sysname']] == 'Windows') {
       x11(pointsize = quartzPoint)
     } else {
       quartz(height = 5, width = 5)
@@ -19,6 +19,7 @@ go <- function(reps = 10, GIF = F, plot = F, contestPlot = F, matingPlot = F, re
   }
   if (plot == T ) {
     quartzPoint <- ifelse(dfABM$groupLiving == T, 1, 13)
+    print(Sys.info()[['sysname']])
     if (Sys.info()['sysname'] == 'Windows') {
       x11(pointsize = quartzPoint)
     } else {
