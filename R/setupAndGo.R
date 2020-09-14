@@ -17,7 +17,6 @@ go <- function(reps = reps, GIF = F, plot = F, contestPlot = F, matingPlot = F, 
   }
   if (contestPlot == T | matingPlot == T) {
     quartz(height = 5, width = 5)
-    par(mfrow=c(2,2))
   }
   if (plot == T ) {
     quartzPoint <- ifelse(dfABM$groupLiving == T, 1, 18)
@@ -27,7 +26,7 @@ go <- function(reps = reps, GIF = F, plot = F, contestPlot = F, matingPlot = F, 
     distances <<- findNeighbors()
     dfAgents <<- move(sinuosity = sinuosity)
     dfAgents <<- seekMate(sight = sight)
-    dfAgents <<- interact(reach = reach)
+    dfAgentfromw<<- interact(reach = reach)
     if (contestPlot == T) {
       cPlot <- plot(dfAgents$winRatio[dfAgents$Sex == "M"] ~ dfAgents$Mass[dfAgents$Sex == "M"])
       abline(lm(dfAgents$winRatio[dfAgents$Sex == "M"] ~ dfAgents$Mass[dfAgents$Sex == "M"]))
@@ -37,7 +36,8 @@ go <- function(reps = reps, GIF = F, plot = F, contestPlot = F, matingPlot = F, 
       mPlot <- plot(dfAgents$Mates[dfAgents$Sex == "M"] ~ dfAgents$Attractiveness[dfAgents$Sex == "M"])
       abline(lm(dfAgents$Mates[dfAgents$Sex == "M"] ~ dfAgents$Attractiveness[dfAgents$Sex == "M"]))
     }
-    agentConstant <- ifelse(dfABM$groupLiving == T, 5, .1)
+    palette(c("red", "blue"))
+    agentConstant <- ifelse(dfABM$groupLiving == T, 5, .5)
     if (plot == T) {
       omitMale <- length(xCorsMale) - length(dfAgents$agentID[dfAgents$Sex == "M"])
       omitFemale <- length(xCorsFemale) - length(dfAgents$agentID[dfAgents$Sex == "F"])
@@ -51,6 +51,7 @@ go <- function(reps = reps, GIF = F, plot = F, contestPlot = F, matingPlot = F, 
                   bg = c(rep(rgb(0, 1, 0, alpha = 0.5), dfABM$numberAgents),
                          dfAgents$Sex),
                   xlim=c(0 - dfABM$worldRadius, dfABM$worldRadius), ylim=c(0 - dfABM$worldRadius, dfABM$worldRadius))
+      legend(1, 95, legend=c("Female", "Male"), col=c("red", "blue"), lty=1:1, cex=0.2)
     }
     if (GIF == T) {
       png(file = paste("fig", i, ".png", sep = ""))
