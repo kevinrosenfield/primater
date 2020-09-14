@@ -14,7 +14,7 @@ go <- function(reps = 10, GIF = F, plot = F, contestPlot = F, matingPlot = F, re
     quartz(height = 5, width = 5)
   }
   if (plot == T ) {
-    quartzPoint <- ifelse(dfABM$groupLiving == T, 1.35, 18)
+    quartzPoint <- ifelse(dfABM$groupLiving == T, 1, 18)
     quartz(pointsize = quartzPoint)
   }
   for (i in 1:reps) {
@@ -32,11 +32,13 @@ go <- function(reps = 10, GIF = F, plot = F, contestPlot = F, matingPlot = F, re
       abline(lm(dfAgents$Mates[dfAgents$Sex == "M"] ~ dfAgents$Attractiveness[dfAgents$Sex == "M"]))
     }
     palette(c("red", "blue"))
-    agentConstant <- ifelse(dfABM$groupLiving == T, 5, .5)
+    agentConstant <- ifelse(dfABM$groupLiving == T, 10, .5)
+    shapes = c(21, 21, 1)
+    shapes <- shapes[sign(dfAgents$fleeTimeLeft) + 2]
     if (plot == T) {
       fig <- plot(c(dfAgents$xCorOrigin, dfAgents$xCor, xCorsCompete),
                   c(dfAgents$yCorOrigin, dfAgents$yCor, yCorsCompete),
-                  pch = c(rep(21, length(cexSizes) + dfABM$numberAgents), rep(4, length(xCorsCompete))),
+                  pch = c(rep(21, length(cexSizes)), shapes, rep(4, length(xCorsCompete))),
                   cex = c(cexSizes,
                           rep(agentConstant, dfABM$numberAgents), rep(agentConstant * 2, length(xCorsCompete))),
                   col = c(rep(rgb(0, 1, 0, alpha = 0.5), dfABM$numberAgents),
