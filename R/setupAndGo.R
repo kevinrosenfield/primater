@@ -17,6 +17,7 @@ go <- function(reps = reps, GIF = F, plot = F, contestPlot = F, matingPlot = F, 
   }
   if (contestPlot == T | matingPlot == T) {
     quartz(height = 5, width = 5)
+    par(mfrow=c(2,2))
   }
   if (plot == T ) {
     quartzPoint <- ifelse(dfABM$groupLiving == T, 1, 18)
@@ -40,18 +41,15 @@ go <- function(reps = reps, GIF = F, plot = F, contestPlot = F, matingPlot = F, 
     if (plot == T) {
       omitMale <- length(xCorsMale) - length(dfAgents$agentID[dfAgents$Sex == "M"])
       omitFemale <- length(xCorsFemale) - length(dfAgents$agentID[dfAgents$Sex == "F"])
-      fig <- plot(c(dfAgents$xCorOrigin, xCorsMale[-c(1:omitMale)], xCorsFemale[-c(1:omitFemale)]),
-                  c(dfAgents$yCorOrigin, yCorsMale[-c(1:omitMale)], yCorsFemale[-c(1:omitFemale)]),
+      fig <- plot(c(dfAgents$xCorOrigin, dfAgents$xCor),
+                  c(dfAgents$yCorOrigin, dfAgents$yCor),
                   pch = 21,
                   cex = c(cexSizes,
-                          rep(agentConstant, length(xCorsMale[-c(1:omitMale)])),
-                          rep(agentConstant, length(xCorsFemale[-c(1:omitFemale)]))),
+                          rep(agentConstant, dfABM$numberAgents)),
                   col = c(rep(rgb(0, 1, 0, alpha = 0.5), dfABM$numberAgents),
-                          rep(rgb(0, 0, 1),  length(xCorsMale[-c(1:omitMale)])),
-                          rep(rgb(1, 0, 0),  length(xCorsFemale[-c(1:omitFemale)]))),
+                          dfAgents$Sex),
                   bg = c(rep(rgb(0, 1, 0, alpha = 0.5), dfABM$numberAgents),
-                         rep(rgb(0, 1, 0),  length(xCorsMale[-c(1:omitMale)])),
-                         rep(rgb(0, 1, 0),  length(xCorsFemale[-c(1:omitFemale)]))),
+                         dfAgents$Sex),
                   xlim=c(0 - dfABM$worldRadius, dfABM$worldRadius), ylim=c(0 - dfABM$worldRadius, dfABM$worldRadius))
     }
     if (GIF == T) {
