@@ -11,23 +11,43 @@ devtools::install_github('kevinrosenfield/primater', force = T)
 detach('package:primater', unload = TRUE)
 library(primater); library(plotly); library(rethinking); library(tidyverse); library(png)
 
-setup(dimensions = 2, liveInGroup = T, numberAgents = 4, maleRangeProp = .2,
-      dayRangeProp = 0.05, worldDiameter = 700, refractory = 365/365)
+betas <- list()
+fleeTimes <- seq(0, 0.02, .001)
+for (f in fleeTimes) {
+  setup(dimensions = 2, liveInGroup = T, numberAgents = 50, maleRangeProp = 2,
+        dayRangeProp = 0.1, worldDiameter = 70, refractory = .1, fleeTime = 0)
 
-go(reps = 1000, GIF = F, plot = T, contestPlot = T, matingPlot = F, reach = 20, sight = 100, sinuosity = 20)
+  go(reps = 300, GIF = F, plot = T, contestPlot = F, matingPlot = F, reach = 10, sight = 75, sinuosity = 25)
+
+  betas <- append(betas, summary(lm(dfAgents$Mates[dfAgents$Sex == "M"] ~
+                                      dfAgents$Mass[dfAgents$Sex == "M"]))[4]$coefficients[2])
+
+}
+
+plot(unlist(betas) ~ fleeTimes)
+summary(lm(unlist(betas) ~ fleeTimes))
+
+  dfAgents %>%
+    filter(Sex == "M") %>%
+    dplyr::select(Mates, Attractiveness, winRatio, Wins, Mass) %>%
+    pairs()
 
 clearModel()
 
-plot(c(dfAgents$xCorOrigin, xCors), c(dfAgents$yCorOrigin, yCors), pch = 21,
-     cex = c(cexSizes,rep(.2, length(xCors))),
-     col = c(rep("blue", dfABM$numberAgents), rep("red",  length(xCors))),
-     bg = c(rep("green", dfABM$numberAgents), rep("green",  length(xCors))),
-     xlim =  c(0 - dfABM$worldRadius, dfABM$worldRadius), ylim = c(0 - dfABM$worldRadius, dfABM$worldRadius))
-
-dfAgents %>%
-  filter(Sex == "M") %>%
-  dplyr::select(Mates, Attractiveness, winRatio, Wins, Mass) %>%
-  pairs()
+palette(c("red", "blue"))
+agentConstant <- ifelse(dfABM$groupLiving == T, 5, .2)
+fig <- plot(c(dfAgents$xCorOrigin, dfAgents$xCor),
+            c(dfAgents$yCorOrigin, dfAgents$yCor),
+            pch = 21,
+            cex = c(cexSizes,
+                    rep(agentConstant, dfABM$numberAgents)),
+            col = c(rep(rgb(0, 1, 0, alpha = 0.5), dfABM$numberAgents),
+                    dfAgents$Sex),
+            bg = c(rep(rgb(0, 1, 0, alpha = 0.5), dfABM$numberAgents),
+                   dfAgents$Sex),
+            xlim=c(0 - dfABM$worldRadius, dfABM$worldRadius), ylim=c(0 - dfABM$worldRadius, dfABM$worldRadius))
+legend("topright", legend=c("Female", "Male"),
+       col=c("red", "blue"), lty=1:1, cex=15)
 
 summary(lm(dfAgents$Mates[dfAgents$Sex == "M"] ~ dfAgents$Attractiveness[dfAgents$Sex == "M"]))
 summary(lm(dfAgents$Mates[dfAgents$Sex == "M"] ~ dfAgents$Mass[dfAgents$Sex == "M"]))
