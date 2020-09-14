@@ -9,45 +9,20 @@
 
 devtools::install_github('kevinrosenfield/primater', force = T)
 detach('package:primater', unload = TRUE)
-library(primater); library(plotly); library(rethinking); library(tidyverse)
+library(primater); library(plotly); library(rethinking); library(tidyverse); library(png)
 
-setup(dimensions = 2, liveInGroup = T)
-quartz()
-plot(NA, xlim = c(-10, 10), ylim = c(-10, 10), type = "n", xaxt = "n", yaxt = "n", xlab = "", ylab = "")
-go(reps = 100, GIF = F, plot = T, contestPlot = F, reach = 10)
+setup(dimensions = 2, liveInGroup = T, numberAgents = 4, maleRangeProp = .2,
+      dayRangeProp = 0.05, worldDiameter = 700, refractory = 365/365)
 
-fig <- plot(c(dfAgents$xCorOrigin, xCors), c(dfAgents$yCorOrigin, yCors), pch = 21,
+go(reps = 1000, GIF = F, plot = T, contestPlot = T, matingPlot = F, reach = 20, sight = 100, sinuosity = 20)
+
+clearModel()
+
+plot(c(dfAgents$xCorOrigin, xCors), c(dfAgents$yCorOrigin, yCors), pch = 21,
      cex = c(cexSizes,rep(.2, length(xCors))),
      col = c(rep("blue", dfABM$numberAgents), rep("red",  length(xCors))),
      bg = c(rep("green", dfABM$numberAgents), rep("green",  length(xCors))),
      xlim =  c(0 - dfABM$worldRadius, dfABM$worldRadius), ylim = c(0 - dfABM$worldRadius, dfABM$worldRadius))
-
-for (i in 1:reps) {
-  distances <- findNeighbors()
-  dfAgents <- chooseMate(reach = 100)
-  dfAgents <- compete(reach = 100)
-  dfAgents$winRatio <- ifelse(dfAgents$Sex == "M", dfAgents$Wins / (dfAgents$Wins + dfAgents$Losses), NA)
-  dfAgents$distFromHome <- lookHome()
-  dfAgents <- setHeading()
-  dfAgents <- move()
-  xCors <- append(xCors, dfAgents$xCor)
-  yCors <- append(yCors, dfAgents$yCor)
-  zCors <- append(zCors, dfAgents$zCor)
-}
-
-for (i in 1:reps) {
-  distances <- findNeighbors()
-  dfAgents <- chooseMate(reach = 10)
-  dfAgents <- compete(reach = 10)
-  dfAgents$distFromHome <- lookHome()
-  dfAgents <- setHeading()
-  dfAgents <- move()
-  xCors <- append(xCors, dfAgents$xCor)
-  yCors <- append(yCors, dfAgents$yCor)
-
-
-
-}
 
 dfAgents %>%
   filter(Sex == "M") %>%
@@ -55,6 +30,8 @@ dfAgents %>%
   pairs()
 
 summary(lm(dfAgents$Mates[dfAgents$Sex == "M"] ~ dfAgents$Attractiveness[dfAgents$Sex == "M"]))
+summary(lm(dfAgents$Mates[dfAgents$Sex == "M"] ~ dfAgents$Mass[dfAgents$Sex == "M"]))
+summary(lm(dfAgents$Mates[dfAgents$Sex == "M"] ~ dfAgents$winRatio[dfAgents$Sex == "M"]))
 summary(lm((dfAgents$Wins[dfAgents$Sex == "M"] ~ dfAgents$Mass[dfAgents$Sex == "M"])))
 summary(lm((dfAgents$Losses[dfAgents$Sex == "M"] ~ dfAgents$Mass[dfAgents$Sex == "M"])))
 summary(lm((dfAgents$winRatio[dfAgents$Sex == "M"] ~ dfAgents$Mass[dfAgents$Sex == "M"])))
