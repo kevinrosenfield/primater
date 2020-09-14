@@ -5,6 +5,7 @@ move <- function(df = dfAgents, sinuosity = sinuosity){
   df$distFromHome <- lookHome(df = df)
   df <- setHeading(df = df, numberAgents = dfABM$numberAgents, sinuosity = sinuosity)
   df <- if (dfABM$dimensions == 2) { move2D(df) } else { move3D(df) }
+  df$fleeTimeLeft <- ifelse(df$fleeTimeLeft <= 0, 0, df$fleeTimeLeft - (dfABM$fleeTime / 24))
   df$Age = df$Age + 0.0001141553
   df$sinceLastMate <- df$sinceLastMate + 0.0001141553
   return(df)
