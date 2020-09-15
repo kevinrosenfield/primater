@@ -1,6 +1,6 @@
 
 setup <- function(dimensions = 2, numberAgents = sample(2:100, 1), worldDiameter = runif(1, 25, 1000), liveInGroup = T,
-                  maleRangeProp = 0.25, dayRangeProp = 0.1, refractory = 1/365, fleeTime = 1, numberMales = NA) {
+                  maleRangeProp = 0.25, dayRangeProp = 0.1, refractory = 1/365, fleeTime = .25, numberMales = NA) {
   dfABM <<- setupABM(dimensions, numberAgents, worldDiameter, liveInGroup, maleRangeProp, dayRangeProp, refractory, fleeTime)
   dfAgents <<- setupAgents(df = dfABM, numberMales)
 }
@@ -68,6 +68,11 @@ go <- function(reps = 10, GIF = F, plot = F, contestPlot = F, matingPlot = F, re
     system("convert -delay 10 *.png example_2_reduced.gif")
     setwd(wd)
   }
+}
+
+makeResources <- function(abundance, density, size) {
+  xResources <<- append(xResources, round(sample(0 - dfABM$worldRadius:dfABM$worldRadius, 1)))
+  yResources <<- append(xResources, round(sample(0 - dfABM$worldRadius:dfABM$worldRadius, 1)))
 }
 
 clearModel <- function() {

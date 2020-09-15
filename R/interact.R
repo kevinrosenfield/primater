@@ -43,7 +43,7 @@ compete <- function(dist.mat = distances, df = dfAgents, reach = reach) {
   xCorsCompete <- list()
   yCorsCompete <- list()
   for (a in 1:dfABM$numberAgents) {
-    if (df$Sex[a] == "F" | df$fleeTimeLeft[a] >= 0) {
+    if (df$Sex[a] == "F" | df$fleeTimeLeft[a] > 0) {
       dist.mat[a,] <- NA
       dist.mat[,a] <- NA
     }
@@ -57,6 +57,7 @@ compete <- function(dist.mat = distances, df = dfAgents, reach = reach) {
       if (df$chasing[loser] == T) {
         df$chasing[loser] <- F
         df$Heading1[loser] <- df$Heading1[loser] - 180
+        df$potentialMate[loser] <- NA
         }
       xCorsCompete <- append(xCorsCompete, df$xCor[a])
       yCorsCompete <- append(yCorsCompete, df$yCor[a])
@@ -71,21 +72,23 @@ compete <- function(dist.mat = distances, df = dfAgents, reach = reach) {
 }
 
 seekMate <- function(dist.mat = distances, df = dfAgents, sight = sight) {
+  print('go')
   dist.mat[dist.mat > sight | dist.mat == 0] <- NA
   for (a in 1:dfABM$numberAgents) {
     if (df$Sex[a] == "M") {
-      dist.mat[,a] <- NA
-    } else {
+      dist.mat[,a] <- NA }
+    if (df$Sex[a] == "F" | dfAgents$fleeTimeLeft[a] > 0) {
       dist.mat[a,] <- NA
     }
   }
   for (a in 1:dfABM$numberAgents) {
     
-    if (dfAgents$chasing[a] == F & dfAgents$fleeTimeLeft[a] >= 0 & !all(is.na(dist.mat[a,])) &
+    if (dfAgents$chasing[a] == F & dfAgents$fleeTimeLeft[a] < 0 & !all(is.na(dist.mat[a,])) &
         sample(1:2, 1, prob = c(1 / (dfABM$refractory * 24),
                                 (abs(dfABM$refractory - (1 / (dfABM$refractory * 24)))))) == 1) {
       df$potentialMate[a] <- which.min(dist.mat[a,])[[1]]
       df$chasing[a] <- T
+      print(paste("I am agent ", df$agentID[a], ", and my fleeTimeLeft is "  dfAgents$fleeTimeLeft[a]))
     }
     if (dfAgents$chasing[a] == T) {
       xCorGoal <- df$xCor[df$potentialMate[a]]

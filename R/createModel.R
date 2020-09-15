@@ -60,7 +60,7 @@ setupAgents <- function(df = dfABM, numberMales) {
   dfAgents$Losses <- rep(0, df$numberAgents)
   dfAgents$winRatio <- 0
   dfAgents$Mates <- rep(0, dfABM$numberAgents)
-  dfAgents$potentialMate <- rep(0, dfABM$numberAgents)
+  dfAgents$potentialMate <- rep(NA, dfABM$numberAgents)
   dfAgents$sinceLastMate <- 1000000
   dfAgents$chasing <- F
   dfAgents$fleeTimeLeft <- rep(0, dfABM$numberAgents)
