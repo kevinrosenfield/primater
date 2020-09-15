@@ -1,8 +1,8 @@
 
-setup <- function(dimensions = 2, numberAgents = sample(2:100, 1), worldDiameter = runif(1, 25, 1000),
-                  liveInGroup = T, maleRangeProp = 0.25, dayRangeProp = 0.1, refractory = 1/365, fleeTime = 1) {
+setup <- function(dimensions = 2, numberAgents = sample(2:100, 1), worldDiameter = runif(1, 25, 1000), liveInGroup = T,
+                  maleRangeProp = 0.25, dayRangeProp = 0.1, refractory = 1/365, fleeTime = 1, numberMales = NA) {
   dfABM <<- setupABM(dimensions, numberAgents, worldDiameter, liveInGroup, maleRangeProp, dayRangeProp, refractory, fleeTime)
-  dfAgents <<- setupAgents(df = dfABM)
+  dfAgents <<- setupAgents(df = dfABM, numberMales)
 }
 
 go <- function(reps = 10, GIF = F, plot = F, contestPlot = F, matingPlot = F, reach = 10, sight = 100, sinuosity = 20) {

@@ -5,6 +5,31 @@
 # challenge stores relevant information. Here, agentID and Mass for both competitions
 # challengers makes a lists of all contests to process; further code cleans up the format and removes duplicate contests
 
+
+findNeighbors <- function(df = dfAgents, numberAgents = dfABM$numberAgents) {
+  if (dfABM$dimensions == 2) {
+    neighbors <- matrix(c(df$agentID, df$xCor, df$yCor), numberAgents, 3)
+  } else {
+    neighbors <- matrix(c(df$agentID, df$xCor, df$yCor, df$zCor), numberAgents, 4)
+  }
+  distances = matrix(ncol = numberAgents)
+  for (i in 1:numberAgents) {
+    if (dfABM$dimensions == 2) {
+      distancesAgent <- c(sqrt((neighbors[,2][i] - neighbors[,2])^2 + (neighbors[,3][i] - neighbors[,3])^2))
+    } else {
+      distancesAgent <- c(sqrt((neighbors[,2][i] - neighbors[,2])^2 + (neighbors[,3][i] - neighbors[,3])^2 +
+                                 (neighbors[,4][i] - neighbors[,4])^2))
+    }
+    distances <- rbind(distances, distancesAgent)
+  }
+  distances <- distances[-1,]
+  row.names(distances) <- c(1:numberAgents)
+  colnames(distances) <- c(1:numberAgents)
+  return(distances)
+}
+
+
+
 interact <- function(df = dfAgents, numberAgents = dfABM$numberAgents, reach = reach) {
 distances <<- findNeighbors(df = dfAgents, numberAgents = dfABM$numberAgents)
 dfAgents <<- chooseMate(reach = reach)
@@ -44,6 +69,35 @@ compete <- function(dist.mat = distances, df = dfAgents, reach = reach) {
   df$winRatio <- df$Wins / (df$Wins + df$Losses)
   return(df)
 }
+
+seekMate <- function(dist.mat = distances, df = dfAgents, sight = sight) {
+  dist.mat[dist.mat > sight | dist.mat == 0] <- NA
+  for (a in 1:dfABM$numberAgents) {
+    if (df$Sex[a] == "M") {
+      dist.mat[,a] <- NA
+    } else {
+      dist.mat[a,] <- NA
+    }
+  }
+  for (a in 1:dfABM$numberAgents) {
+    
+    if (dfAgents$chasing[a] == F & dfAgents$fleeTimeLeft[a] >= 0 & !all(is.na(dist.mat[a,])) &
+        sample(1:2, 1, prob = c(1 / (dfABM$refractory * 24),
+                                (abs(dfABM$refractory - (1 / (dfABM$refractory * 24)))))) == 1) {
+      df$potentialMate[a] <- which.min(dist.mat[a,])[[1]]
+      df$chasing[a] <- T
+    }
+    if (dfAgents$chasing[a] == T) {
+      xCorGoal <- df$xCor[df$potentialMate[a]]
+      yCorGoal <- df$yCor[df$potentialMate[a]]
+      zCorGoal <- df$zCor[df$potentialMate[a]]
+      angle <- complex(real = xCorGoal - df$xCor[a], imaginary = yCorGoal - df$yCor[a]) # need to adapt this to 3D
+      df$Heading1[a] <- Arg(angle) / base::pi * 180
+    }
+  }
+  return(df)
+}
+
 
 # sample from 0 with prob = 0 because when there is only 1 caller, sample is set tp 1:caller
 
