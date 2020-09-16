@@ -74,7 +74,6 @@ compete <- function(dist.mat = distances, df = dfAgents, reach = reach) {
 seekMate <- function(dist.mat = distances, df = dfAgents, sight = sight) {
   dist.mat[dist.mat > sight | dist.mat == 0] <- NA
   for (a in 1:dfABM$numberAgents) {
-    print(a)
     if (df$Sex[a] == "M") {
       dist.mat[,a] <- NA }
     if (df$Sex[a] == "F" | dfAgents$fleeTimeLeft[a] > 0) {

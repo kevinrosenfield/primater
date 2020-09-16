@@ -74,14 +74,14 @@ setupAgents <- function(df = dfABM, numberMales) {
   dfAgents$metersPerHour <- dfAgents$dayRangeMeters * df$dailyActivityProp
   
   cexSizes <- list()
-  cexConstant <- ifelse(dfABM$groupLiving == T, 20.1, 0.8)
+  cexConstant <- ifelse(dfABM$groupLiving == T, 450, 22)
   cexConstant <- ifelse((Sys.info()[['sysname']] == 'Windows') == T,
                         ifelse(dfABM$groupLiving == T, cexConstant * 1.8, cexConstant * 1.4), cexConstant)
   
   fig <<- plot(NA, xlim =  c(0 - dfABM$worldRadius, dfABM$worldRadius), ylim = c(0 - dfABM$worldRadius, dfABM$worldRadius))
   #rm(fig, pos=".GlobalEnv")
   cexSizes <<- (dfAgents$homeRangeRadius / (par("cin")[2] / par("pin")[1]) /
-                  (par("usr")[2] -par("usr")[1]) / par("cex") / 0.1875) * 1.1 * cexConstant
+                  (par("usr")[2] -par("usr")[1]) * 0.5 * par("cex") * 0.375) * 1.1 * cexConstant
   
   print(paste("This ", df$dimensions, "-dimensional model world is ", round(df$worldSizeMetersDim,2), " m^",
               df$dimensions,". Its ", length(dfAgents$Sex[dfAgents$Sex == "F"]), " female residents' home ranges are ",
