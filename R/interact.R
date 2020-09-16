@@ -72,9 +72,9 @@ compete <- function(dist.mat = distances, df = dfAgents, reach = reach) {
 }
 
 seekMate <- function(dist.mat = distances, df = dfAgents, sight = sight) {
-  print('go')
   dist.mat[dist.mat > sight | dist.mat == 0] <- NA
   for (a in 1:dfABM$numberAgents) {
+    print(a)
     if (df$Sex[a] == "M") {
       dist.mat[,a] <- NA }
     if (df$Sex[a] == "F" | dfAgents$fleeTimeLeft[a] > 0) {
@@ -88,8 +88,8 @@ seekMate <- function(dist.mat = distances, df = dfAgents, sight = sight) {
                                 (abs(dfABM$refractory - (1 / (dfABM$refractory * 24)))))) == 1) {
       df$potentialMate[a] <- which.min(dist.mat[a,])[[1]]
       df$chasing[a] <- T
-      print(paste("I am agent ", df$agentID[a], ", and my fleeTimeLeft is "  dfAgents$fleeTimeLeft[a]))
     }
+    
     if (dfAgents$chasing[a] == T) {
       xCorGoal <- df$xCor[df$potentialMate[a]]
       yCorGoal <- df$yCor[df$potentialMate[a]]
