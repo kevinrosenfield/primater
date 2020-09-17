@@ -59,7 +59,8 @@ setupResources <- function(numberPatches, sitesPerPatch, patchSpread, siteTotalE
     }
   }
   return(as.data.frame(bind_cols("x" = xFeedingSites, "y" = yFeedingSites,
-                                 "energyRemaining" = rep(siteTotalEnergy, length(xFeedingSites)))))
+                                 "energyRemaining" = rep(siteTotalEnergy, length(xFeedingSites)),
+                                 "agentFeeding" = NA))))
 }
 
 
@@ -106,7 +107,7 @@ setupAgents <- function(df = dfABM, numberMales, energyNeedsPerKilo) {
                                         abs(rnorm(df$numberAgents, df$meanMaleRangeMetersDim, df$sdMaleRangeMetersDim)))
   dfAgents$homeRangeRadius <- sqrt(dfAgents$homeRangeMetersDim/pi)
   dfAgents$dayRangeMeters <- dfAgents$homeRangeRadius * 2 * df$dayRangeProp
-  dfAgents$metersPerHour <- dfAgents$dayRangeMeters * (1 / df$dailyActivityProp)
+  dfAgents$metersPerHour <- (dfAgents$dayRangeMeters / 24) * (1 / df$dailyActivityProp)
   
   cexSizes <- list()
   cexConstant <- ifelse(dfABM$groupLiving == T, 548, 22)

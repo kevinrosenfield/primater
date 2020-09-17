@@ -32,7 +32,8 @@ go <- function(reps = 10, GIF = F, plot = F, contestPlot = F, matingPlot = F, re
     }
   }
   for (i in 1:reps) {
-    energyNeedsRemaining <- ifelse(hour == 0, energyNeedsRemaining + dfAgents$myDailyEnergyNeeds, energyNeedsRemaining)
+    dfAgents$energyNeedsRemaining <- ifelse(dfABM$hour == 0, dfAgents$energyNeedsRemaining +
+                                              dfAgents$myDailyEnergyNeeds, dfAgents$energyNeedsRemaining)
     distances <<- findNeighbors()
     dfAgents <<- move(sinuosity = sinuosity)
     dfAgents <<- seekMate(sight = sight)
