@@ -1,14 +1,20 @@
-setupABM <- function(dimensions, numberAgents, worldDiameter, liveInGroup, maleRangeProp, dayRangeProp, refractory, fleeTime) {
+setupABM <- function(dimensions, numberAgents, worldDiameter, liveInGroup, maleRangeProp, dayRangeProp,
+                     refractory, fleeTime, siteHourlyEnergy, energyNeedsPerKilo) {
   model <-  list(
     "numberAgents" = numberAgents,
     "Territorial" = sample(c(FALSE, TRUE), 1),
     "groupLiving" = liveInGroup,
     "worldDiameterMeters" = worldDiameter,
     "dimensions" = dimensions,
+    "hour" = 0,
+    "day" = 0,
+    "year" = 0,
     "dailyActivityProp" = abs(rnorm(1, 0.12, 0.025)),
     "dayRangeProp" = dayRangeProp,
     "refractory" = refractory,
-    "fleeTime" = fleeTime)
+    "fleeTime" = fleeTime,
+    "siteHourlyEnergy" = siteHourlyEnergy,
+    "energyNeedsPerKilo" = energyNeedsPerKilo)
   model <- c(
     model,
     "worldRadius" = model$worldDiameterMeters / 2,
@@ -29,8 +35,35 @@ setupABM <- function(dimensions, numberAgents, worldDiameter, liveInGroup, maleR
 }
 
 
+setupResources <- function(numberPatches, sitesPerPatch, patchSpread, siteTotalEnergy) {
+  xFeedingSites <- c()
+  yFeedingSites <- c()
+  patchRadius <- dfABM$worldRadius * patchSpread
+  for (p in 1:numberPatches) {
+    xPatch <- runif(1, 0 - dfABM$worldRadius, 0 + dfABM$worldRadius)
+    yPatch <- runif(1, 0 - dfABM$worldRadius, 0 + dfABM$worldRadius)
+    while (sqrt((0 - xPatch)^2 + (0 - yPatch)^2) > dfABM$worldRadius - patchRadius) {
+      xPatch <- runif(1, 0 - dfABM$worldRadius, 0 + dfABM$worldRadius)
+      yPatch <- runif(1, 0 - dfABM$worldRadius, 0 + dfABM$worldRadius)
+    }
+    sitesInThisPatch <- abs(round(rnorm(1, sitesPerPatch, sitesPerPatch / 3)))
+    for (s in 1:sitesPerPatch) {
+      xFeedingSite <- runif(1, xPatch - patchRadius, xPatch + patchRadius)
+      yFeedingSite <- runif(1, yPatch - patchRadius, yPatch + patchRadius)
+      while (sqrt((xPatch - xFeedingSite)^2 + (yPatch - yFeedingSite)^2) > patchRadius) {
+        xFeedingSite <- runif(1, xPatch - patchRadius, xPatch + patchRadius)
+        yFeedingSite <- runif(1, yPatch - patchRadius, yPatch + patchRadius)
+      }
+      xFeedingSites <- append(xFeedingSites, xFeedingSite)
+      yFeedingSites <- append(yFeedingSites, yFeedingSite)
+    }
+  }
+  return(as.data.frame(bind_cols("x" = xFeedingSites, "y" = yFeedingSites,
+                                 "energyRemaining" = rep(siteTotalEnergy, length(xFeedingSites)))))
+}
 
-setupAgents <- function(df = dfABM, numberMales) {
+
+setupAgents <- function(df = dfABM, numberMales, energyNeedsPerKilo) {
   dfAgents <- data.frame(1:df$numberAgents)
   dfAgents$agentID <- seq(1:df$numberAgents)
   dfAgents <- dfAgents[-1]
@@ -55,6 +88,8 @@ setupAgents <- function(df = dfABM, numberMales) {
     dfAgents$Sex = as.factor(ifelse(sample(1:2, df$numberAgents, replace = TRUE) == 1, "M", "F"))
   }
   dfAgents$Mass <- abs(rnorm(df$numberAgents, 20, 5))
+  dfAgents$myDailyEnergyNeeds <- energyNeedsPerKilo * dfAgents$Mass
+  dfAgents$energyNeedsRemaining <- dfAgents$myDailyEnergyNeeds
   dfAgents$Attractiveness <- abs(rnorm(df$numberAgents, 5, 1.66))
   dfAgents$Wins <- rep(0, df$numberAgents)
   dfAgents$Losses <- rep(0, df$numberAgents)
@@ -71,7 +106,7 @@ setupAgents <- function(df = dfABM, numberMales) {
                                         abs(rnorm(df$numberAgents, df$meanMaleRangeMetersDim, df$sdMaleRangeMetersDim)))
   dfAgents$homeRangeRadius <- sqrt(dfAgents$homeRangeMetersDim/pi)
   dfAgents$dayRangeMeters <- dfAgents$homeRangeRadius * 2 * df$dayRangeProp
-  dfAgents$metersPerHour <- dfAgents$dayRangeMeters * df$dailyActivityProp
+  dfAgents$metersPerHour <- dfAgents$dayRangeMeters * (1 / df$dailyActivityProp)
   
   cexSizes <- list()
   cexConstant <- ifelse(dfABM$groupLiving == T, 548, 22)
