@@ -1,17 +1,18 @@
 
 setup <- function(dimensions = 2, numberAgents = sample(2:100, 1), worldDiameter = runif(1, 25, 1000), liveInGroup = T,
                   maleRangeProp = 0.25, dayRangeProp = 0.1, refractory = 1/365, fleeTime = .25, numberMales = NA,
-                  numberPatches = runif(n = 1, min = 1, max = 10), sitesPerPatch = round(runif(n = 1, min = 1, max = 10)),
-                  patchSpread = runif(1, 0, 100) / 100, siteHourlyEnergy = 200, siteTotalEnergy = 5000,
-                  energyNeedsPerKilo = 25) {
-  dfABM <<- setupABM(dimensions, numberAgents, worldDiameter, liveInGroup, maleRangeProp, dayRangeProp, refractory, fleeTime,
-                     siteHourlyEnergy, energyNeedsPerKilo)
-  dfResources <<- setupResources(numberPatches, sitesPerPatch, patchSpread, siteTotalEnergy)
+                  numberPatches = runif(n = 1, min = 3, max = 10), sitesPerPatch = round(runif(n = 1, min = 5, max = 10)),
+                  patchSpread = runif(1, 0, 100) / 100, siteHourlyEnergy = 200, siteMaxEnergy = 1000,
+                  energyNeedsPerKilo = 25, siteHourlyEnergyGrowth = 2) {
+  dfABM <<- setupABM(dimensions, numberAgents, worldDiameter, liveInGroup, maleRangeProp,
+                     dayRangeProp, refractory, fleeTime, siteHourlyEnergy, energyNeedsPerKilo,
+                     siteHourlyEnergyGrowth, siteMaxEnergy)
+  dfResources <<- setupResources(numberPatches, sitesPerPatch, patchSpread, dfABM$siteMaxEnergy)
   dfAgents <<- setupAgents(df = dfABM, numberMales, energyNeedsPerKilo)
 }
 
 
-go <- function(reps = 10, GIF = F, plot = F, contestPlot = F, matingPlot = F, reach = 10, sight = 100, sinuosity = 20) {
+go <- function(reps = 100, GIF = F, plot = T, contestPlot = F, matingPlot = F, reach = 10, sight = 100, sinuosity = 30, siteMaxEnergy = dfABM$siteMaxEnergy) {
   if (GIF == T) {
     wd <- getwd()
     setwd("/Users/kevinrosenfield/Box/PSU/Dissertation/New dissertation/Figures")
@@ -32,10 +33,11 @@ go <- function(reps = 10, GIF = F, plot = F, contestPlot = F, matingPlot = F, re
     }
   }
   for (i in 1:reps) {
-    dfAgents$energyNeedsRemaining <- ifelse(dfABM$hour == 0, dfAgents$energyNeedsRemaining +
+    dfAgents$energyNeedsRemaining <<- ifelse(rep(dfABM$hour == 0, dfABM$numberAgents), dfAgents$energyNeedsRemaining +
                                               dfAgents$myDailyEnergyNeeds, dfAgents$energyNeedsRemaining)
     distances <<- findNeighbors()
     dfAgents <<- move(sinuosity = sinuosity)
+    dfAgents <<- seekFood(sight = sight)
     dfAgents <<- seekMate(sight = sight)
     dfAgents <<- interact(reach = reach)
     if (contestPlot == T) {
@@ -65,15 +67,19 @@ go <- function(reps = 10, GIF = F, plot = F, contestPlot = F, matingPlot = F, re
                          dfAgents$Sex, rep(NA, length(xCorsCompete))),
                   xlim=c(0 - (dfABM$worldRadius * axisConstant), (dfABM$worldRadius * axisConstant)),
                   ylim=c(0 - (dfABM$worldRadius * axisConstant), (dfABM$worldRadius * axisConstant)))
-      legend("topright", legend=c("Female", "Male"), col=c("red", "blue"), lty=1:1, cex=1 * legendConstant)
+      #points(dfABM$worldRadius, 0, cex = agentConstant * 5)
+      legend("topright", legend=c("Female", "Male", "Food"), col=c("white", "blue", "green"),
+             lty=1:1, cex=1 * legendConstant)
     }
     if (GIF == T) {
       png(file = paste("fig", i, ".png", sep = ""))
       dev.off()
     }
-    dfABM$hour = ifelse(dfABM$hour == 23, 0, dfABM$hour + 1)
-    dfABM$day = ifelse(dfABM$hour == 0, ifelse(dfABM$day == 364, 0, dfABM$day + 1), dfABM$day)
-    dfABM$year = ifelse(dfABM$day == 0, dfABM$year + 1, dfABM$year)
+    dfABM$hour <<-  ifelse(dfABM$hour == 23, 0, dfABM$hour + 1)
+    dfABM$day <<- ifelse(dfABM$hour == 0, ifelse(dfABM$day == 364, 0, dfABM$day + 1), dfABM$day)
+    dfABM$year <<- ifelse(dfABM$day == 0, dfABM$year + 1, dfABM$year)
+    dfResources$energyRemaining <<- dfResources$energyRemaining + dfABM$siteHourlyEnergyGrowth
+    dfResources$energyRemaining[dfResources$energyRemaining > dfABM$siteMaxEnergy] <<- dfABM$siteMaxEnergy
   }
   if (GIF == T) {
     system("convert -delay 10 *.png example_2_reduced.gif")

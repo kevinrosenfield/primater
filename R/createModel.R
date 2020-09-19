@@ -1,12 +1,13 @@
 setupABM <- function(dimensions, numberAgents, worldDiameter, liveInGroup, maleRangeProp, dayRangeProp,
-                     refractory, fleeTime, siteHourlyEnergy, energyNeedsPerKilo) {
+                     refractory, fleeTime, siteHourlyEnergy, energyNeedsPerKilo,
+                     siteHourlyEnergyGrowth, siteMaxEnergy) {
   model <-  list(
     "numberAgents" = numberAgents,
     "Territorial" = sample(c(FALSE, TRUE), 1),
     "groupLiving" = liveInGroup,
     "worldDiameterMeters" = worldDiameter,
     "dimensions" = dimensions,
-    "hour" = 0,
+    "hour" = 1,
     "day" = 0,
     "year" = 0,
     "dailyActivityProp" = abs(rnorm(1, 0.12, 0.025)),
@@ -14,7 +15,9 @@ setupABM <- function(dimensions, numberAgents, worldDiameter, liveInGroup, maleR
     "refractory" = refractory,
     "fleeTime" = fleeTime,
     "siteHourlyEnergy" = siteHourlyEnergy,
-    "energyNeedsPerKilo" = energyNeedsPerKilo)
+    "energyNeedsPerKilo" = energyNeedsPerKilo,
+    "siteHourlyEnergyGrowth" = siteHourlyEnergyGrowth,
+    "siteMaxEnergy" = siteMaxEnergy)
   model <- c(
     model,
     "worldRadius" = model$worldDiameterMeters / 2,
@@ -35,7 +38,7 @@ setupABM <- function(dimensions, numberAgents, worldDiameter, liveInGroup, maleR
 }
 
 
-setupResources <- function(numberPatches, sitesPerPatch, patchSpread, siteTotalEnergy) {
+setupResources <- function(numberPatches, sitesPerPatch, patchSpread, siteMaxEnergy) {
   xFeedingSites <- c()
   yFeedingSites <- c()
   patchRadius <- dfABM$worldRadius * patchSpread
@@ -59,8 +62,8 @@ setupResources <- function(numberPatches, sitesPerPatch, patchSpread, siteTotalE
     }
   }
   return(as.data.frame(bind_cols("x" = xFeedingSites, "y" = yFeedingSites,
-                                 "energyRemaining" = rep(siteTotalEnergy, length(xFeedingSites)),
-                                 "agentFeeding" = NA))))
+                                 "energyRemaining" = rep(siteMaxEnergy, length(xFeedingSites)),
+                                 "agentFeeding" = NA)))
 }
 
 
@@ -91,6 +94,17 @@ setupAgents <- function(df = dfABM, numberMales, energyNeedsPerKilo) {
   dfAgents$Mass <- abs(rnorm(df$numberAgents, 20, 5))
   dfAgents$myDailyEnergyNeeds <- energyNeedsPerKilo * dfAgents$Mass
   dfAgents$energyNeedsRemaining <- dfAgents$myDailyEnergyNeeds
+  siteTotalTravelDist <- 0
+  for (s in 1:length(dfResources$x)) {
+    siteTotalTravelDist <- siteTotalTravelDist + sqrt((dfAgents$xCorOrigin - dfResources$x[s])^2
+                                                      + (dfAgents$yCorOrigin - dfResources$y[s])^2)
+  }
+  dfAgents$siteMeanTravelDist <- siteTotalTravelDist / length(dfResources$x)
+  dfAgents$xCorFood <- NA
+  dfAgents$yCorFood <- NA
+  dfAgents$zCorFood <- NA
+  dfAgents$potentialFeedingSite <- NA
+  dfAgents$feeding <- F
   dfAgents$Attractiveness <- abs(rnorm(df$numberAgents, 5, 1.66))
   dfAgents$Wins <- rep(0, df$numberAgents)
   dfAgents$Losses <- rep(0, df$numberAgents)
@@ -110,7 +124,7 @@ setupAgents <- function(df = dfABM, numberMales, energyNeedsPerKilo) {
   dfAgents$metersPerHour <- (dfAgents$dayRangeMeters / 24) * (1 / df$dailyActivityProp)
   
   cexSizes <- list()
-  cexConstant <- ifelse(dfABM$groupLiving == T, 548, 22)
+  cexConstant <- ifelse(dfABM$groupLiving == T, 570, 22)
   cexConstant <- ifelse((Sys.info()[['sysname']] == 'Windows') == T,
                         ifelse(dfABM$groupLiving == T, cexConstant * 1.8, cexConstant * 1.4), cexConstant)
   

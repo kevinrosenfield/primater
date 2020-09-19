@@ -12,8 +12,9 @@ move <- function(df = dfAgents, sinuosity = sinuosity){
 }
 
 move2D <- function(df = dfAgents) {
-  df$xCor = df$xCor + (df$metersPerHour * cos((df$Heading1) * (pi / 180)))
-  df$yCor = df$yCor + (df$metersPerHour * sin((df$Heading1) * (pi / 180)))
+  df$xCor = ifelse(df$feeding == F, df$xCor + (df$metersPerHour * cos((df$Heading1) * (pi / 180))), df$xCor)
+  df$yCor = ifelse(df$feeding == F, df$yCor + (df$metersPerHour * sin((df$Heading1) * (pi / 180))), df$yCor)
+  df$feeding <- F
   return(df)
 }
 
@@ -37,7 +38,7 @@ setHeading <- function(df = dfAgents, numberAgents = dfABM$numberAgents, sinuosi
 
 setHeading2D <- function(df = dfAgents, numberAgents = dfABM$numberAgents, sinuosity = sinuosity) {
   df$Heading1 <- ifelse(df$distFromHome < df$homeRangeRadius - df$metersPerHour,
-                        ifelse(df$chasing == T, df$Heading1,
+                        ifelse(df$chasing == T | !is.na(df$potentialFeedingSite), df$Heading1,
                                df$Heading1 + rnorm(numberAgents, 0, sinuosity)),
                         Arg(complex(real = df$xCorOrigin - df$xCor, imaginary = df$yCorOrigin - df$yCor)) /base::pi * 180)
   df$Heading1 <- ifelse(df$Heading1 >= 360 | df$Heading1 < 0, abs(abs(df$Heading1) - 360), df$Heading1)
