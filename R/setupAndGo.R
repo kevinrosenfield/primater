@@ -67,7 +67,7 @@ go <- function(reps = 100, GIF = F, plot = T, contestPlot = F, matingPlot = F, r
                          dfAgents$Sex, rep(NA, length(xCorsCompete))),
                   xlim=c(0 - (dfABM$worldRadius * axisConstant), (dfABM$worldRadius * axisConstant)),
                   ylim=c(0 - (dfABM$worldRadius * axisConstant), (dfABM$worldRadius * axisConstant)))
-      #points(dfABM$worldRadius, 0, cex = agentConstant * 5)
+      points(dfABM$worldRadius, 0, cex = agentConstant * 5)
       legend("topright", legend=c("Female", "Male", "Food"), col=c("white", "blue", "green"),
              lty=1:1, cex=1 * legendConstant)
     }

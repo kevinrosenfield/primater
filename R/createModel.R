@@ -122,24 +122,24 @@ setupAgents <- function(df = dfABM, numberMales, energyNeedsPerKilo) {
   dfAgents$homeRangeRadius <- sqrt(dfAgents$homeRangeMetersDim/pi)
   dfAgents$dayRangeMeters <- dfAgents$homeRangeRadius * 2 * df$dayRangeProp
   dfAgents$metersPerHour <- (dfAgents$dayRangeMeters / 24) * (1 / df$dailyActivityProp)
-  
+
   cexSizes <- list()
-  cexConstant <- ifelse(dfABM$groupLiving == T, 570, 22)
+  cexConstant <- ifelse(dfABM$groupLiving == T, 245, 22)
   cexConstant <- ifelse((Sys.info()[['sysname']] == 'Windows') == T,
                         ifelse(dfABM$groupLiving == T, cexConstant * 1.8, cexConstant * 1.4), cexConstant)
-  
+
   fig <<- plot(NA, xlim =  c(0 - dfABM$worldRadius, dfABM$worldRadius), ylim = c(0 - dfABM$worldRadius, dfABM$worldRadius))
   #rm(fig, pos=".GlobalEnv")
   cexSizes <<- (dfAgents$homeRangeRadius / (par("cin")[2] / par("pin")[1]) /
                   (par("usr")[2] -par("usr")[1]) * 0.5 * par("cex") * 0.375) * 1.1 * cexConstant
-  
+
   print(paste("This ", df$dimensions, "-dimensional model world is ", round(df$worldSizeMetersDim,2), " m^",
               df$dimensions,". Its ", length(dfAgents$Sex[dfAgents$Sex == "F"]), " female residents' home ranges are ",
               round(df$meanFemaleRangeMetersDim ,2), " m^", df$dimensions, " on average.", sep = ""), 1)
   print(paste("This ", df$dimensions, "-dimensional model world is ", round(df$worldSizeMetersDim,2), " m^", df$dimensions,
               ". Its ", length(dfAgents$Sex[dfAgents$Sex == "M"]), " male residents' home ranges are ",
               round(df$meanMaleRangeMetersDim ,2), " m^", df$dimensions, " on average.", sep = ""), 1)
-  
+
   return(dfAgents)
 }
 
