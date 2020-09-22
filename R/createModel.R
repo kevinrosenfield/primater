@@ -61,6 +61,7 @@ setupResources <- function(numberPatches, sitesPerPatch, patchSpread, siteMaxEne
       yFeedingSites <- append(yFeedingSites, yFeedingSite)
     }
   }
+
   return(as.data.frame(bind_cols("x" = xFeedingSites, "y" = yFeedingSites,
                                  "energyRemaining" = rep(siteMaxEnergy, length(xFeedingSites)),
                                  "agentFeeding" = NA)))
@@ -104,6 +105,7 @@ setupAgents <- function(df = dfABM, numberMales, energyNeedsPerKilo) {
   dfAgents$yCorFood <- NA
   dfAgents$zCorFood <- NA
   dfAgents$potentialFeedingSite <- NA
+  dfAgents$currentFeedingSite <- NA
   dfAgents$feeding <- F
   dfAgents$Attractiveness <- abs(rnorm(df$numberAgents, 5, 1.66))
   dfAgents$Wins <- rep(0, df$numberAgents)
@@ -124,7 +126,7 @@ setupAgents <- function(df = dfABM, numberMales, energyNeedsPerKilo) {
   dfAgents$metersPerHour <- (dfAgents$dayRangeMeters / 24) * (1 / df$dailyActivityProp)
 
   cexSizes <- list()
-  cexConstant <- ifelse(dfABM$groupLiving == T, 245, 22)
+  cexConstant <- ifelse(dfABM$groupLiving == T, 400, 22)
   cexConstant <- ifelse((Sys.info()[['sysname']] == 'Windows') == T,
                         ifelse(dfABM$groupLiving == T, cexConstant * 1.8, cexConstant * 1.4), cexConstant)
 
@@ -142,5 +144,6 @@ setupAgents <- function(df = dfABM, numberMales, energyNeedsPerKilo) {
 
   return(dfAgents)
 }
+
 
 

@@ -37,7 +37,7 @@ go <- function(reps = 100, GIF = F, plot = T, contestPlot = F, matingPlot = F, r
                                               dfAgents$myDailyEnergyNeeds, dfAgents$energyNeedsRemaining)
     distances <<- findNeighbors()
     dfAgents <<- move(sinuosity = sinuosity)
-    dfAgents <<- seekFood(sight = sight)
+    dfAgents <<- checkHunger(sight = sight)
     dfAgents <<- seekMate(sight = sight)
     dfAgents <<- interact(reach = reach)
     if (contestPlot == T) {

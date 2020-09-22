@@ -2,8 +2,8 @@
 # agents' age increases by 1 hour (1/365/24) during every time step
 
 move <- function(df = dfAgents, sinuosity = sinuosity){
-  df$distFromHome <- lookHome(df = df)
-  df <- setHeading(df = df, numberAgents = dfABM$numberAgents, sinuosity = sinuosity)
+  df$distFromHome <- lookHome(df)
+  df <- setHeading(df, dfABM$numberAgents, sinuosity)
   df <- if (dfABM$dimensions == 2) { move2D(df) } else { move3D(df) }
   df$fleeTimeLeft <- df$fleeTimeLeft - (1 / (dfABM$fleeTime * 24))
   df$Age = df$Age + 0.0001141553
@@ -11,7 +11,7 @@ move <- function(df = dfAgents, sinuosity = sinuosity){
   return(df)
 }
 
-move2D <- function(df = dfAgents) {
+move2D <- function(df) {
   df$xCor = ifelse(df$feeding == F, df$xCor + (df$metersPerHour * cos((df$Heading1) * (pi / 180))), df$xCor)
   df$yCor = ifelse(df$feeding == F, df$yCor + (df$metersPerHour * sin((df$Heading1) * (pi / 180))), df$yCor)
   df$feeding <- F
@@ -46,7 +46,7 @@ setHeading2D <- function(df = dfAgents, numberAgents = dfABM$numberAgents, sinuo
 }
 
 setHeading3D <- function(df = dfAgents, numberAgents = dfABM$numberAgents, sinuosity = sinuosity) {
-  
+
   df$Heading1 <- ifelse(df$distFromHome < df$homeRangeRadius - df$metersPerHour,
                         ifelse(df$chasing == T, df$Heading1,
                                df$Heading1 + rnorm(numberAgents, 0, sinuosity)), df$Heading1 - 180)
