@@ -126,7 +126,7 @@ setupAgents <- function(df = dfABM, numberMales, energyNeedsPerKilo) {
   dfAgents$metersPerHour <- (dfAgents$dayRangeMeters / 24) * (1 / df$dailyActivityProp)
 
   cexSizes <- list()
-  cexConstant <- ifelse(dfABM$groupLiving == T, 400, 22)
+  cexConstant <- ifelse(dfABM$groupLiving == T, 570, 22)
   cexConstant <- ifelse((Sys.info()[['sysname']] == 'Windows') == T,
                         ifelse(dfABM$groupLiving == T, cexConstant * 1.8, cexConstant * 1.4), cexConstant)
 

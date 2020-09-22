@@ -12,7 +12,14 @@ checkHunger <- function(df = dfAgents, resources = dfResources, sight) {
       df$xCorFood[a] <- dfResources$x[df$potentialFeedingSite[a]]
       df$yCorFood[a] <- dfResources$y[df$potentialFeedingSite[a]]
       distFood <- sqrt((df$xCorFood[a] - df$xCor[a])^2 + (df$yCorFood[a] - df$yCor[a])^2)
-      df$currentFeedingSite[a] <- ifelse(distFood < df$metersPerHour[a], df$potentialFeedingSite[a], NA)
+      if (distFood < df$metersPerHour[a]) {
+        df$currentFeedingSite[a] <-df$potentialFeedingSite[a]
+        } else {
+          faceFood(df, a)
+          }
+    } else {
+      df$xCorFood[a] <- NA
+      df$yCorFood[a] <- NA
     }
   }
   for (f in 1:length(resources$agentFeeding)) {
@@ -38,8 +45,10 @@ checkFoodSite <- function(df, resources, sight, a) {
   euclideanDist[euclideanDist > sight] <- NA
   euclideanDist[euclideanDist == 0] <- 0.00000000001
   displaceFeederProb <- ifelse(is.na(dfResources$agentFeeding), 1, df$Mass[a] / (df$Mass[dfResources$agentFeeding] + df$Mass[a]))
+  print(c(euclideanDist, displaceFeederProb, dfResources$energyRemaining))
   potentialFeedingSite <- ifelse(!all(is.na(euclideanDist)), which.min(euclideanDist / (displaceFeederProb * dfResources$energyRemaining)), NA)
-  potentialFeedingSite[potentialFeedingSite = 0] <- NA
+  print(potentialFeedingSite)
+  resources$energyRemaining[resources$energyRemaining == 0] <- NA
   return(potentialFeedingSite)
 }
 

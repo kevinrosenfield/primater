@@ -25,7 +25,7 @@ go <- function(reps = 100, GIF = F, plot = T, contestPlot = F, matingPlot = F, r
     }
   }
   if (plot == T ) {
-    quartzPoint <- ifelse(dfABM$groupLiving == T, 1, 13)
+    quartzPoint <- ifelse(dfABM$groupLiving == T, 1.1, 13)
     if (Sys.info()[['sysname']] == 'Windows') {
       x11(pointsize = quartzPoint * 1.4)
     } else {
