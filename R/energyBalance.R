@@ -8,6 +8,7 @@ checkHunger <- function(df = dfAgents, resources = dfResources, sight) {
     seekFoodProb[seekFoodProb > 1]  <- 1
     df$potentialFeedingSite[a] <- ifelse(sample(c(1,2), 1, prob = c(seekFoodProb, 1 - seekFoodProb)) == 1,
                                          checkFoodSite(df, resources, sight, a), NA)
+
     if(!is.na(df$potentialFeedingSite[a])) {
       df$xCorFood[a] <- dfResources$x[df$potentialFeedingSite[a]]
       df$yCorFood[a] <- dfResources$y[df$potentialFeedingSite[a]]
@@ -15,7 +16,7 @@ checkHunger <- function(df = dfAgents, resources = dfResources, sight) {
       if (distFood < df$metersPerHour[a]) {
         df$currentFeedingSite[a] <-df$potentialFeedingSite[a]
         } else {
-          faceFood(df, a)
+          df <- faceFood(df, a)
           }
     } else {
       df$xCorFood[a] <- NA
@@ -45,9 +46,7 @@ checkFoodSite <- function(df, resources, sight, a) {
   euclideanDist[euclideanDist > sight] <- NA
   euclideanDist[euclideanDist == 0] <- 0.00000000001
   displaceFeederProb <- ifelse(is.na(dfResources$agentFeeding), 1, df$Mass[a] / (df$Mass[dfResources$agentFeeding] + df$Mass[a]))
-  print(c(euclideanDist, displaceFeederProb, dfResources$energyRemaining))
   potentialFeedingSite <- ifelse(!all(is.na(euclideanDist)), which.min(euclideanDist / (displaceFeederProb * dfResources$energyRemaining)), NA)
-  print(potentialFeedingSite)
   resources$energyRemaining[resources$energyRemaining == 0] <- NA
   return(potentialFeedingSite)
 }
@@ -71,8 +70,8 @@ feed <- function(df, resources, feedingSite) {
   resources$energyRemaining[feedingSite] <- resources$energyRemaining[feedingSite] - dfABM$siteHourlyEnergy
   resources$energyRemaining[resources$energyRemaining < 0] <- 0
   dfResources$resources$agentFeeding[feedingSite] <- NA
-  df$currentFeedingSite[agentFeeding] <- NA
-  df$potentialFeedingSite[agentFeeding] <- NA
+  # df$currentFeedingSite[agentFeeding] <- NA
+  # df$potentialFeedingSite[agentFeeding] <- NA
   dfResources <<- resources
   return(df)
 }
@@ -138,6 +137,7 @@ feed <- function(df, resources, feedingSite) {
 #   print(paste("Food fight: ", winner, " wins, ", loser, " loses."))
 #   return(startFeeding)
 # }
+
 
 
 

@@ -4,6 +4,7 @@ setup <- function(dimensions = 2, numberAgents = sample(2:100, 1), worldDiameter
                   numberPatches = runif(n = 1, min = 3, max = 10), sitesPerPatch = round(runif(n = 1, min = 5, max = 10)),
                   patchSpread = runif(1, 0, 100) / 100, siteHourlyEnergy = 200, siteMaxEnergy = 1000,
                   energyNeedsPerKilo = 25, siteHourlyEnergyGrowth = 2) {
+  if (length(dev.list()) > 1) {for (d in 2:length(dev.list()) - 1) { dev.off() } }
   dfABM <<- setupABM(dimensions, numberAgents, worldDiameter, liveInGroup, maleRangeProp,
                      dayRangeProp, refractory, fleeTime, siteHourlyEnergy, energyNeedsPerKilo,
                      siteHourlyEnergyGrowth, siteMaxEnergy)
@@ -50,7 +51,7 @@ go <- function(reps = 100, GIF = F, plot = T, contestPlot = F, matingPlot = F, r
       abline(lm(dfAgents$Mates[dfAgents$Sex == "M"] ~ dfAgents$Attractiveness[dfAgents$Sex == "M"]))
     }
     palette(c("white", "blue"))
-    agentConstant <- ifelse(dfABM$groupLiving == T, 10, .5)
+    agentConstant <- ifelse(dfABM$groupLiving == T, 6, .5)
     legendConstant <- ifelse(dfABM$groupLiving == T, 15, 1)
     axisConstant <- ifelse(dfABM$groupLiving == T, 1, 1.5)
     shapes = c(21, 21, 1)
@@ -80,16 +81,19 @@ go <- function(reps = 100, GIF = F, plot = T, contestPlot = F, matingPlot = F, r
     dfABM$year <<- ifelse(dfABM$day == 0, dfABM$year + 1, dfABM$year)
     dfResources$energyRemaining <<- dfResources$energyRemaining + dfABM$siteHourlyEnergyGrowth
     dfResources$energyRemaining[dfResources$energyRemaining > dfABM$siteMaxEnergy] <<- dfABM$siteMaxEnergy
+    dfAgents[c("potentialFeedingSite", "currentFeedingSite", "xCorFood", "yCorFood")] <<- NA
+    dfAgents$feeding <<- F
   }
   if (GIF == T) {
     system("convert -delay 10 *.png example_2_reduced.gif")
     setwd(wd)
   }
+  if (length(dev.list()) > 1) {for (d in 2:length(dev.list()) - 1) { dev.off() } }
 }
 
 
 clearModel <- function() {
   suppressWarnings({rm(dfAgents, pos = ".GlobalEnv")})
   suppressWarnings({rm(dfABM, pos = ".GlobalEnv")})
-  if (length(dev.list()) > 0) {for (d in 1:length(dev.list()) - 1) { dev.off() } }
+  if (length(dev.list()) > 1) {for (d in 2:length(dev.list()) - 1) { dev.off() } }
 }
