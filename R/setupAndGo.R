@@ -37,10 +37,10 @@ go <- function(reps = 100, GIF = F, plot = T, contestPlot = F, matingPlot = F, r
     dfAgents$energyNeedsRemaining <<- ifelse(rep(dfABM$hour == 0, dfABM$numberAgents), dfAgents$energyNeedsRemaining +
                                               dfAgents$myDailyEnergyNeeds, dfAgents$energyNeedsRemaining)
     distances <<- findNeighbors()
-    dfAgents <<- move(sinuosity = sinuosity)
     dfAgents <<- checkHunger(sight = sight)
-    dfAgents <<- seekMate(sight = sight)
-    dfAgents <<- interact(reach = reach)
+    dfAgents <<- move(sinuosity = sinuosity)
+    if (dfABM$numberAgents > 1) { dfAgents <<- seekMate(sight = sight) }
+    if (dfABM$numberAgents > 1) { dfAgents <<- interact(reach = reach) }
     if (contestPlot == T) {
       cPlot <- plot(dfAgents$winRatio[dfAgents$Sex == "M"] ~ dfAgents$Mass[dfAgents$Sex == "M"])
       abline(lm(dfAgents$winRatio[dfAgents$Sex == "M"] ~ dfAgents$Mass[dfAgents$Sex == "M"]))

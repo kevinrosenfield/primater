@@ -23,8 +23,10 @@ findNeighbors <- function(df = dfAgents, numberAgents = dfABM$numberAgents) {
     distances <- rbind(distances, distancesAgent)
   }
   distances <- distances[-1,]
-  row.names(distances) <- c(1:numberAgents)
-  colnames(distances) <- c(1:numberAgents)
+  if (dfABM$numberAgents > 1) {
+    row.names(distances) <- c(1:numberAgents)
+    colnames(distances) <- c(1:numberAgents)
+  }
   return(distances)
 }
 
