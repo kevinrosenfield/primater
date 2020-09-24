@@ -42,8 +42,8 @@ dfAgents <<- compete(reach = reach)
 compete <- function(dist.mat = distances, df = dfAgents, reach = reach) {
   dist.mat[upper.tri(dist.mat, diag = TRUE) == TRUE] <- NA
   dist.mat[dist.mat > reach] <- NA
-  for (a in 1:dfABM$numberAgents) {
-    if (df$Sex[a] == "F" | df$fleeTimeLeft[a] > 0) {
+  for (a in seq_along(df$agetnID)) {
+    if (df$Sex[a] == "F" | df$fleeTimeLeft[a] > 0 | !is.na(df$potentialFeedingSite[a])) {
       dist.mat[a,] <- NA
       dist.mat[,a] <- NA
     }
@@ -71,10 +71,10 @@ compete <- function(dist.mat = distances, df = dfAgents, reach = reach) {
 
 seekMate <- function(dist.mat = distances, df = dfAgents, sight = sight) {
   dist.mat[dist.mat > sight | dist.mat == 0] <- NA
-  for (a in 1:dfABM$numberAgents) {
+  for (a in seq_along(df$agentID)) {
     if (df$Sex[a] == "M") {
       dist.mat[,a] <- NA }
-    if (df$Sex[a] == "F" | dfAgents$fleeTimeLeft[a] > 0) {
+    if (df$Sex[a] == "F" | dfAgents$fleeTimeLeft[a] > 0 | !is.na(df$potentialFeedingSite[a])) {
       dist.mat[a,] <- NA
     }
   }

@@ -73,14 +73,19 @@ setupAgents <- function(df = dfABM, numberMales, energyNeedsPerKilo) {
   dfAgents$agentID <- seq(1:df$numberAgents)
   dfAgents <- dfAgents[-1]
   dfAgents$dimensions <- df$dimensions
-  dfAgents$xCor <- runif(df$numberAgents, 0 - df$worldDiameterMeters / 2, df$worldDiameterMeters / 2)
-  dfAgents$yCor <- runif(df$numberAgents, 0 - df$worldDiameterMeters / 2, df$worldDiameterMeters / 2)
+  dfAgents$xCor <- runif(df$numberAgents, 0 - df$worldRadius, 0 + df$worldRadius)
+  dfAgents$yCor <- runif(df$numberAgents, 0 - df$worldRadius, 0 + df$worldRadius)
   if (df$dimensions == 3) {
-    dfAgents$zCor <- runif(df$numberAgents, 0 - df$worldDiameterMeters / 2, df$worldDiameterMeters / 2)
+    dfAgents$zCor <- runif(df$numberAgents, 0 - df$worldRadius, 0 + df$worldRadius)
   } else {
     dfAgents$zCor <- NA
   }
-  if (dfABM$groupLiving == T) { dfAgents[c("xCor", "yCor", "zCor")] <- dfAgents[c("xCor", "yCor", "zCor")] / 2 }
+  for (a in seq_along(dfAgents$agentID)) {
+    while (sqrt((0 - dfAgents$xCor[a])^2 + (0 - dfAgents$yCor[a])^2) > df$worldRadius) {
+      dfAgents$xCor[a] <- runif(1, 0 - df$worldRadius, 0 + df$worldRadius)
+      dfAgents$yCor[a] <- runif(1, 0 - df$worldRadius, 0 + df$worldRadius)
+    }
+  }
   dfAgents$xCorOrigin <- dfAgents$xCor
   dfAgents$yCorOrigin <- dfAgents$yCor
   dfAgents$zCorOrigin <- dfAgents$zCor
